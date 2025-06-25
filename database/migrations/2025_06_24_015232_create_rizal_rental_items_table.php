@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('rizal_rental_items', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->integer('stock');
             $table->decimal('price_per_day', 15,2);
             $table->string('image');

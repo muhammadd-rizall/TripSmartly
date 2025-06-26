@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\RentalItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class RentalItemController extends Controller
@@ -27,9 +29,9 @@ class RentalItemController extends Controller
         $validated = $request->validate([
             'name'          => 'required|string',
             'description'   => 'nullable|string',
-            'stock'         => 'required|integer',
-            'price_per_day' => 'required|decimal|min=15|max=2',
-            'image'         => 'required|images|mimes:jpg,png,jpeg,webp'
+            'stock'         => 'required|integer|min:0',
+            'price_per_day' => 'required|numeric|min:0|decimal:2',
+            'image'         => 'required|image|mimes:jpg,png,jpeg,webp'
         ]);
 
         //ambil input file dan simpan ke storage
@@ -48,30 +50,31 @@ class RentalItemController extends Controller
             ]
         );
 
-        return redirect('/')->with('succes', 'Item Rental Saved Successfully');
+        return redirect('/rental_item')->with('succes', 'Item Rental Saved Successfully');
     }
 
     //edit Rental Item
     public function edit($id)
     {
         $item = RentalItem::find($id);
-        return view('admins.item-rental');
+        return view('admins.edit_rental_item', compact('item'));
     }
 
-    public function update(Request $request, $id): RedirectResponse {
+    public function update(Request $request, $id)
+    {
 
         $validated = $request->validate([
             'name'          => 'required|string',
             'description'   => 'nullable|string',
-            'stock'         => 'required|integer',
-            'price_per_day' => 'required|decimal|min=15|max=2',
-            'image'         => 'required|images|mimes:jpg,png,jpeg,webp'
+            'stock'         => 'required|integer|min:0',
+            'price_per_day' => 'required|numeric|min:0|decimal:2',
+            'image'         => 'required|image|mimes:jpg,png,jpeg,webp'
         ]);
 
         $item = RentalItem::findOrFail($id);
 
-        if($request->hasFile('image')){
-            $images = $request->file('image')->store('Rental_item','public');
+        if ($request->hasFile('image')) {
+            $images = $request->file('image')->store('Rental_item', 'public');
             $item->image = $images;
         }
 
@@ -82,10 +85,22 @@ class RentalItemController extends Controller
         $item->price_per_day = $validated['price_per_day'];
         $item->save();
 
-        return redirect('item_rental');
+        return redirect('/rental_item');
     }
 
-    public function delete($id){
-        
+
+    //delete rental item
+    public function destroy($id)
+    {
+        $item = RentalItem::findOrFail($id);
+
+        // Jika ada file gambar, hapus juga (opsional)
+        if ($item->image && Storage::disk('public')->exists($item->image)) {
+            Storage::disk('public')->delete($item->image);
+        }
+
+        $item->delete();
+
+        return redirect('/rental_item')->with('success', 'Item berhasil dihapus.');
     }
 }

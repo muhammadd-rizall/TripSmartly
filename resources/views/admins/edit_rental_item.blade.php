@@ -11,7 +11,7 @@
                             </div>
 
 
-                            <form action="#" method="post" enctype="multipart/form-data">
+                            <form action="/update-rental/{{ $item->id }}" method="post" enctype="multipart/form-data">
                                 @csrf
 
                                 {{-- Nama barang --}}
@@ -51,8 +51,8 @@
                                 <div class="mb-3">
                                     <label for="price_per_day" class="form-label">Harga perhari*</label>
                                     <input type="number" name="price_per_day" id="price_per_day"
-                                        class="form-control @error('stock') is-invalid @enderror"
-                                        value="{{ $item->price_per_day}}" required>
+                                        class="form-control @error('price_per_day') is-invalid @enderror"
+                                        value="{{ $item->price_per_day }}" required>
                                     @error('price_per_day')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -60,19 +60,26 @@
 
                                 {{-- image --}}
                                 <div class="mb-3">
-                                    <label for="image" class="form-label">Gambar Barang*</label>
+                                    <label for="image" class="form-label">Gambar Barang (opsional)</label>
                                     <input type="file" name="image" id="image"
-                                        class="form-control @error('stock') is-invalid @enderror"
-                                        value="{{ $item->image }}" required>
+                                        class="form-control @error('image') is-invalid @enderror">
                                     @error('image')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+
+                                    @if ($item->image)
+                                        <div class="mt-2">
+                                            <strong>Gambar saat ini:</strong><br>
+                                            <img src="{{ asset('storage/' . $item->image) }}"
+                                                alt="Gambar {{ $item->name }}" class="img-thumbnail" width="150">
+                                        </div>
+                                    @endif
                                 </div>
 
 
                                 {{-- Buttons --}}
                                 <div class="d-flex justify-content-between mt-4">
-                                    <a href="#" class="btn btn-secondary">Back</a>
+                                    <a href="/rental_item" class="btn btn-secondary">Back</a>
                                     <button type="submit" class="btn btn-primary">save</button>
                                 </div>
                             </form>

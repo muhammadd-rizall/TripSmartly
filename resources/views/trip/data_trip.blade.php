@@ -35,26 +35,19 @@
                             <td>Rp {{ number_format($trip->base_price, 2, ',', '.') }}</td>
                             <td>{{ $trip->quota }}</td>
                             <td>
-                                @if (is_array($trip->includes))
-                                    {{ implode(', ', $trip->includes) }}
-                                @else
-                                    {{ $trip->includes }}
-                                @endif
+                                @foreach (explode(',', $trip->includes) as $item)
+                                    - {{ trim($item) }} <br>
+                                @endforeach
                             </td>
                             <td>
-                                @if (is_array($trip->excludes))
-                                    {{ implode(', ', $trip->excludes) }}
-                                @else
-                                    {{ $trip->excludes }}
-                                @endif
+                                @foreach (explode(',', $trip->excludes) as $item)
+                                    - {{ trim($item) }} <br>
+                                @endforeach
                             </td>
-
-
                             <td>
                                 <img src="{{ asset('storage/' . $trip->image) }}" alt="{{ $trip->name }}" width="80">
                             </td>
                             <td>{{ $trip->status }}</td>
-
                             <td>
                                 <div class="d-flex justify-content-center gap-1">
                                     <a href="#" class="btn btn-sm btn-primary">Show</a>
@@ -65,12 +58,12 @@
                                         @method('DELETE')
                                         <button class="btn btn-danger">Delete</button>
                                     </form>
-
                                 </div>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
+
             </table>
         </div>
     </div>

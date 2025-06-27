@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('trip_id')->constrained('rizal_trip');
             $table->string('day');
-            $table->time('time');
             $table->text('activity');
             $table->timestamps();
         });

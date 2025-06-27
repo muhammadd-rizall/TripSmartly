@@ -19,8 +19,8 @@ return new class extends Migration
             $table->integer('quota');
             $table->decimal('base_price', 15, 2);
             $table->string('image');
-            $table->json('includes')->nullable();
-            $table->json('excludes')->nullable();
+            $table->text('includes')->nullable();
+            $table->text('excludes')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->foreignId('region_id')->constrained('rizal_regions');
             $table->foreignId('category_id')->constrained('rizal_categories');

@@ -6,6 +6,7 @@ use App\Models\Categories;
 use App\Models\Region;
 use App\Models\Trip;
 use App\Models\TripDestination;
+use App\Models\TripItternary;
 use App\Models\TripSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -18,12 +19,14 @@ class TripController extends Controller
 
 
     //tampilan tabel rental item
+    // Tampilkan daftar trip
     public function indexTrip()
     {
         $trips = Trip::latest()->paginate(10);
         return view('trip.data_trip', compact('trips'));
     }
 
+    // Form create trip
     public function create()
     {
         $categories = Categories::all();
@@ -31,7 +34,7 @@ class TripController extends Controller
         return view('trip.create_trip', compact('categories', 'regions'));
     }
 
-    //input data trip
+    // Simpan trip baru
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -48,48 +51,47 @@ class TripController extends Controller
             'status'         => 'required|string'
         ]);
 
-        //ambil input file dan simpan ke storage
+        // Upload gambar
         $images = null;
         if ($request->hasFile('image')) {
             $images = $request->file('image')->store('trip', 'public');
         }
 
-        Trip::create(
-            [
-                'title'          => $validated['title'],
-                'category_id'    => $validated['category_id'],
-                'region_id'      => $validated['region_id'],
-                'description'    => $validated['description'],
-                'meeting_point'  => $validated['meeting_point'],
-                'base_price'     => $validated['base_price'],
-                'quota'          => $validated['quota'],
-                'includes'       => array_map('trim', explode(',', $validated['includes'])),
-                'excludes'       => array_map('trim', explode(',', $validated['excludes'])),
-                'image'          => $images,
-                'status'         => $validated['status'],
-            ]
-        );
+        // Simpan data trip
+        Trip::create([
+            'title'         => $validated['title'],
+            'category_id'   => $validated['category_id'],
+            'region_id'     => $validated['region_id'],
+            'description'   => $validated['description'],
+            'meeting_point' => $validated['meeting_point'],
+            'base_price'    => $validated['base_price'],
+            'quota'         => $validated['quota'],
+            'includes'      => implode(', ', array_map('trim', preg_split('/\r\n|\r|\n/', $validated['includes']))),
+            'excludes'      => implode(', ', array_map('trim', preg_split('/\r\n|\r|\n/', $validated['excludes']))),
+            'image'         => $images,
+            'status'        => $validated['status'],
+        ]);
 
-        return redirect('/trip')->with('succes', 'Item Rental Saved Successfully');
+        return redirect('/trip')->with('success', 'Trip berhasil disimpan.');
     }
 
-    //edit trip
+    // Tampilkan form edit
     public function edit($id)
     {
         $trip = Trip::findOrFail($id);
         $categories = Categories::all();
         $regions = Region::all();
 
-        // Konversi array ke string join
-        $trip->includes = is_array($trip->includes) ? implode("\n", $trip->includes) : $trip->includes;
-        $trip->excludes = is_array($trip->excludes) ? implode("\n", $trip->excludes) : $trip->excludes;
+        // Konversi includes & excludes ke format textarea (baris)
+        $trip->includes = str_replace(',', "\n", $trip->includes);
+        $trip->excludes = str_replace(',', "\n", $trip->excludes);
 
         return view('trip.edit_trip', compact('trip', 'categories', 'regions'));
     }
 
+    // Proses update trip
     public function update(Request $request, $id)
     {
-
         $validated = $request->validate([
             'title'          => 'required|string',
             'category_id'    => 'required|exists:rizal_categories,id',
@@ -100,46 +102,52 @@ class TripController extends Controller
             'quota'          => 'required|integer',
             'includes'       => 'required|string',
             'excludes'       => 'required|string',
-            'image'          => 'required|image|mimes:jpg,png,jpeg,webp',
+            'image'          => 'nullable|image|mimes:jpg,png,jpeg,webp',
             'status'         => 'required|string'
         ]);
 
         $trip = Trip::findOrFail($id);
 
+        // Update gambar jika ada
         if ($request->hasFile('image')) {
-            $images = $request->file('image')->store('trip', 'public');
-            $trip->image = $images;
+            // Hapus gambar lama jika ada
+            if ($trip->image && Storage::disk('public')->exists($trip->image)) {
+                Storage::disk('public')->delete($trip->image);
+            }
+
+            $trip->image = $request->file('image')->store('trip', 'public');
         }
 
-        //update data
-        $trip->title = $validated['title'];
-        $trip->category_id = $validated['category_id'];
-        $trip->region_id = $validated['region_id'];
-        $trip->description = $validated['description'];
-        $trip->meeting_point = $validated['meeting_point'];
-        $trip->base_price = $validated['base_price'];
-        $trip->quota = $validated['quota'];
-        $trip->includes = array_map('trim', explode(',', $validated['includes']));
-        $trip->excludes = array_map('trim', explode(',', $validated['excludes']));
-        $trip->status = $validated['status'];
-        $trip->save();
+        // Update data
+        $trip->update([
+            'title'         => $validated['title'],
+            'category_id'   => $validated['category_id'],
+            'region_id'     => $validated['region_id'],
+            'description'   => $validated['description'],
+            'meeting_point' => $validated['meeting_point'],
+            'base_price'    => $validated['base_price'],
+            'quota'         => $validated['quota'],
+            'includes'      => implode(', ', array_map('trim', preg_split('/\r\n|\r|\n/', $validated['includes']))),
+            'excludes'      => implode(', ', array_map('trim', preg_split('/\r\n|\r|\n/', $validated['excludes']))),
+            'status'        => $validated['status'],
+        ]);
 
-        return redirect('/trip');
+        return redirect('/trip')->with('success', 'Trip berhasil diupdate.');
     }
 
-    //delete trip
+    // Hapus trip
     public function destroy($id)
     {
         $trip = Trip::findOrFail($id);
 
-        // Jika ada file gambar, hapus juga (opsional)
+        // Hapus gambar jika ada
         if ($trip->image && Storage::disk('public')->exists($trip->image)) {
             Storage::disk('public')->delete($trip->image);
         }
 
         $trip->delete();
 
-        return redirect('/trip')->with('success', 'Item berhasil dihapus.');
+        return redirect('/trip')->with('success', 'Trip berhasil dihapus.');
     }
 
 
@@ -208,11 +216,11 @@ class TripController extends Controller
 
         $tripS = TripSchedule::findOrFail($id);
         $tripS->trip_id = $validated['trip_id'];
-        $tripS->start_date =$validated['start_date'];
-        $tripS->end_date =$validated['end_date'];
-        $tripS->quota =$validated['quota'];
-        $tripS->price =$validated['price'];
-        $tripS->status =$validated['status'];
+        $tripS->start_date = $validated['start_date'];
+        $tripS->end_date = $validated['end_date'];
+        $tripS->quota = $validated['quota'];
+        $tripS->price = $validated['price'];
+        $tripS->status = $validated['status'];
         $tripS->save();
 
         return redirect('/trip-schedule');
@@ -305,5 +313,90 @@ class TripController extends Controller
         $tripS->delete();
 
         return redirect('/trip-destination')->with('success', 'Item berhasil dihapus.');
+    }
+
+
+    //-------------
+    //Trip internaries
+    //-------------
+    public function indexIT()
+    {
+        $itineraries = TripItternary::latest()->paginate(10);
+        return view('tripItineraries.trip_itineraries', compact('itineraries'));
+    }
+
+    // CREATE
+    public function createIT()
+    {
+        $trips = Trip::all();
+        return view('tripItineraries.create_trip_itineraries', compact('trips'));
+    }
+
+    // STORE
+    public function storeIT(Request $request)
+    {
+        $request->validate([
+            'trip_id'  => 'required|exists:rizal_trip,id',
+            'day'      => 'required|string',
+            'activity' => 'required|string',
+        ]);
+
+        // Proses teks multiline jadi 1 string dipisahkan koma
+        $activitiesArray = preg_split('/\r\n|\r|\n/', $request->activity);
+        $activitiesArray = array_filter(array_map('trim', $activitiesArray));
+        $combinedActivities = implode(', ', $activitiesArray);
+
+        TripItternary::create([
+            'trip_id'  => $request->trip_id,
+            'day'      => $request->day,
+            'activity' => $combinedActivities,
+        ]);
+
+        return redirect('/itinerary')->with('success', 'Itinerary berhasil ditambahkan.');
+    }
+
+    // EDIT
+    public function editIT($id)
+    {
+        $itinerary = TripItternary::findOrFail($id);
+        $trips = Trip::all();
+
+        // Konversi dari koma ke newline
+        $itinerary->activity = implode("\n", array_map('trim', explode(',', $itinerary->activity)));
+
+        return view('tripItineraries.edit_trip_itineraries', compact('itinerary', 'trips'));
+    }
+
+
+    // UPDATE
+    public function updateIT(Request $request, $id)
+    {
+        $request->validate([
+            'trip_id'  => 'required|exists:rizal_trip,id',
+            'day'      => 'required|string',
+            'activity' => 'required|string',
+        ]);
+
+        $activitiesArray = preg_split('/\r\n|\r|\n/', $request->activity);
+        $activitiesArray = array_filter(array_map('trim', $activitiesArray));
+        $combinedActivities = implode(', ', $activitiesArray);
+
+        $itinerary = TripItternary::findOrFail($id);
+        $itinerary->update([
+            'trip_id'  => $request->trip_id,
+            'day'      => $request->day,
+            'activity' => $combinedActivities,
+        ]);
+
+        return redirect('/itinerary')->with('success', 'Itinerary berhasil diupdate.');
+    }
+
+    // DESTROY
+    public function destroyIT($id)
+    {
+        $itinerary = TripItternary::findOrFail($id);
+        $itinerary->delete();
+
+        return redirect('/itinerary')->with('success', 'Itinerary berhasil dihapus.');
     }
 }

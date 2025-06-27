@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RentalItem;
+use App\Models\RentalOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,17 +12,22 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class RentalItemController extends Controller
 {
 
+    //-------------
+    //Rental items
+    //-------------
+
+
     //tampilan tabel rental item
     public function itemRental()
     {
         $items = RentalItem::latest()->paginate(10);
-        return view('admins.item_rental', compact('items'));
+        return view('itemRental.item_rental', compact('items'));
     }
 
     //tampilan input rental item
     public function create()
     {
-        return view('admins.create_rental_item');
+        return view('itemRental.create_rental_item');
     }
 
     public function store(Request $request)
@@ -102,5 +108,16 @@ class RentalItemController extends Controller
         $item->delete();
 
         return redirect('/rental_item')->with('success', 'Item berhasil dihapus.');
+    }
+
+
+
+        //-------------
+        //Rental Orders
+        //-------------
+
+    public function rentalOrder(){
+        $rentalOrders = RentalOrder::latest()->paginate(10);
+        return view('itemRental.rental_orders', compact('rentalOrders'));
     }
 }

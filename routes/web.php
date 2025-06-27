@@ -15,3 +15,7 @@ Route::post('/input-rental-item', [RentalItemController::class, 'store']);
 Route::get('/edit-rental/{id}', [RentalItemController::class, 'edit']);
 Route::post('/update-rental/{id}', [RentalItemController::class, 'update']);
 Route::delete('/delete-rental/{id}', [RentalItemController::class, 'destroy']);
+
+
+//route order
+Route::get('/rental-order',[RentalItemController::class,'rentalOrder']);

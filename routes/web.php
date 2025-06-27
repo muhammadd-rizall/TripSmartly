@@ -29,3 +29,12 @@ Route::post('/input-trip',[TripController::class, 'store']);
 Route::get('/edit-trip/{id}',[TripController::class, 'edit']);
 Route::post('/update-trip/{id}',[TripController::class, 'update']);
 Route::delete('/delete-trip/{id}',[TripController::class, 'destroy']);
+
+
+//route trip Schedule
+Route::get('/trip-schedule', [TripController::class, 'indexSchedule']);
+Route::get('create-trip-schedule', [TripController::class, 'createSchedule']);
+Route::post('/input-trip-schedule', [TripController::class, 'storeSchedule']);
+Route::get('/edit-trip-schedule/{id}', [TripController::class, 'editSchedule']);
+Route::post('/update-trip-schedule/{id}', [TripController::class, 'updateSchedule']);
+Route::delete('/delete-trip-schedule/{id}', [TripController::class, 'destroySchedule']);

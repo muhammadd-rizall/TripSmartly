@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Categories;
 use App\Models\Region;
 use App\Models\Trip;
+use App\Models\TripSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,15 +17,17 @@ class TripController extends Controller
 
 
     //tampilan tabel rental item
-    public function indexTrip(){
+    public function indexTrip()
+    {
         $trips = Trip::latest()->paginate(10);
         return view('trip.data_trip', compact('trips'));
     }
 
-    public function create(){
+    public function create()
+    {
         $categories = Categories::all();
         $regions = Region::all();
-        return view('trip.create_trip',compact('categories','regions'));
+        return view('trip.create_trip', compact('categories', 'regions'));
     }
 
     //input data trip
@@ -36,7 +39,7 @@ class TripController extends Controller
             'region_id'      => 'required|exists:rizal_regions,id',
             'description'    => 'nullable|string',
             'meeting_point'  => 'required|string',
-            'base_price'     => 'required|numeric|min:0|decimal:2',
+            'base_price'     => 'required|numeric|min:0',
             'quota'          => 'required|integer',
             'includes'       => 'required|string',
             'excludes'       => 'required|string',
@@ -86,13 +89,13 @@ class TripController extends Controller
     public function update(Request $request, $id)
     {
 
-         $validated = $request->validate([
+        $validated = $request->validate([
             'title'          => 'required|string',
             'category_id'    => 'required|exists:rizal_categories,id',
             'region_id'      => 'required|exists:rizal_regions,id',
             'description'    => 'nullable|string',
             'meeting_point'  => 'required|string',
-            'base_price'     => 'required|numeric|min:0|decimal:2',
+            'base_price'     => 'required|numeric|min:0',
             'quota'          => 'required|integer',
             'includes'       => 'required|string',
             'excludes'       => 'required|string',
@@ -136,5 +139,92 @@ class TripController extends Controller
         $trip->delete();
 
         return redirect('/trip')->with('success', 'Item berhasil dihapus.');
+    }
+
+
+    //-------------
+    //Trip Schedule
+    //-------------
+    public function indexSchedule()
+    {
+        $tripSchedules = TripSchedule::latest()->paginate(10);
+        return view('tripSchedule.trip_schedule', compact('tripSchedules'));
+    }
+
+    public function createSchedule()
+    {
+        $tripSchedules = trip::all();
+        return view('tripSchedule.create_trip_schedule', compact('tripSchedules'));
+    }
+
+    //input
+    public function storeSchedule(Request $request)
+    {
+        $validated = $request->validate([
+            'trip_id'       => 'required|exists:rizal_trip,id',
+            'start_date'    => 'required|date',
+            'end_date'      => 'required|date',
+            'quota'         => 'nullable|integer',
+            'price'         => 'nullable|numeric|min:0',
+            'status'        => 'required|string'
+        ]);
+
+        TripSchedule::create(
+            [
+                'trip_id'          => $validated['trip_id'],
+                'start_date'       => $validated['start_date'],
+                'end_date'         => $validated['end_date'],
+                'quota'            => $validated['quota'],
+                'price'            => $validated['price'],
+                'status'           => $validated['status'],
+            ]
+        );
+
+        return redirect('/trip-schedule')->with('succes', 'Item Rental Saved Successfully');
+    }
+
+
+    //edit
+    public function editSchedule($id)
+    {
+        $tripS = TripSchedule::findOrFail($id);
+        $tripSchedules = Trip::all();
+
+
+        return view('tripSchedule.edit_trip_schedule', compact('tripS', 'tripSchedules'));
+    }
+
+    public function updateSchedule(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'trip_id'       => 'required|exists:rizal_trip,id',
+            'start_date'    => 'required|date',
+            'end_date'      => 'required|date',
+            'quota'         => 'nullable|integer',
+            'price'         => 'nullable|numeric|min:0',
+            'status'        => 'required|string'
+        ]);
+
+        $tripS = TripSchedule::findOrFail($id);
+        $tripS->trip_id = $validated['trip_id'];
+        $tripS->start_date =$validated['start_date'];
+        $tripS->end_date =$validated['end_date'];
+        $tripS->quota =$validated['quota'];
+        $tripS->price =$validated['price'];
+        $tripS->status =$validated['status'];
+        $tripS->save();
+
+        return redirect('/trip-schedule');
+    }
+
+
+    //hapus
+    public function destroySchedule($id)
+    {
+        $tripS = Trip::findOrFail($id);
+
+        $tripS->delete();
+
+        return redirect('/trip-schedule')->with('success', 'Item berhasil dihapus.');
     }
 }

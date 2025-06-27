@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('trip_id')->constrained('rizal_trip')->onDelete('cascade');
             $table->date('start_date');
             $table->date('end_date');
-            $table->integer('quota');
+            $table->integer('quota')->nullable();
             $table->decimal('price', 15, 2)->nullable();
             $table->enum('status', ['open', 'closed', 'cancelled'])->default('open');
             $table->timestamps();

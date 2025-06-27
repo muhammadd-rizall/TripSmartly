@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Categories;
 use App\Models\Region;
 use App\Models\Trip;
+use App\Models\TripDestination;
 use App\Models\TripSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -221,10 +222,88 @@ class TripController extends Controller
     //hapus
     public function destroySchedule($id)
     {
-        $tripS = Trip::findOrFail($id);
+        $tripS = TripSchedule::findOrFail($id);
 
         $tripS->delete();
 
         return redirect('/trip-schedule')->with('success', 'Item berhasil dihapus.');
+    }
+
+
+    //-------------
+    //Trip Destination
+    //-------------
+    public function indexTD()
+    {
+        $tds = TripDestination::latest()->paginate(10);
+        return view('tripDestination.data_trip_destination', compact('tds'));
+    }
+
+    public function createTD()
+    {
+        $trips = Trip::all();
+        return view('tripDestination.create_trip_destination', compact('trips'));
+    }
+
+
+    public function storeTD(Request $request)
+    {
+        $request->validate([
+            'trip_id' => 'required|exists:rizal_trip,id',
+            'places' => 'required|string',
+            'description' => 'required|string',
+        ]);
+
+        $placesArray = preg_split('/\r\n|\r|\n/', $request->places);
+        $placesArray = array_filter(array_map('trim', $placesArray));
+        $combinedPlaces = implode(', ', $placesArray);
+
+        TripDestination::create([
+            'trip_id' => $request->trip_id,
+            'place_name' => $combinedPlaces,
+            'description' => $request->description,
+        ]);
+
+        return redirect('/trip-destination')->with('success', 'Data berhasil disimpan!');
+    }
+
+
+    public function editTD($id)
+    {
+        $td = TripDestination::findOrFail($id);
+        $trips = Trip::all();
+        return view('tripDestination.edit_trip_destination', compact('td', 'trips'));
+    }
+
+
+    public function updateTD(Request $request, $id)
+    {
+        $request->validate([
+            'trip_id' => 'required|exists:rizal_trip,id',
+            'places' => 'required|string',
+            'description' => 'required|string',
+        ]);
+
+        $placesArray = preg_split('/\r\n|\r|\n/', $request->places);
+        $placesArray = array_filter(array_map('trim', $placesArray));
+        $combinedPlaces = implode(', ', $placesArray);
+
+        $td = TripDestination::findOrFail($id);
+        $td->update([
+            'trip_id' => $request->trip_id,
+            'place_name' => $combinedPlaces,
+            'description' => $request->description,
+        ]);
+
+        return redirect('/trip-destination')->with('success', 'Data berhasil diupdate!');
+    }
+
+    public function destroyTD($id)
+    {
+        $tripS = TripDestination::findOrFail($id);
+
+        $tripS->delete();
+
+        return redirect('/trip-destination')->with('success', 'Item berhasil dihapus.');
     }
 }

@@ -38,3 +38,12 @@ Route::post('/input-trip-schedule', [TripController::class, 'storeSchedule']);
 Route::get('/edit-trip-schedule/{id}', [TripController::class, 'editSchedule']);
 Route::post('/update-trip-schedule/{id}', [TripController::class, 'updateSchedule']);
 Route::delete('/delete-trip-schedule/{id}', [TripController::class, 'destroySchedule']);
+
+
+//route trip Destiantion
+Route::get('/trip-destination', [TripController::class, 'indexTd']);
+Route::get('createTD', [TripController::class, 'createTD']);
+Route::post('/inputTD', [TripController::class, 'storeTD']);
+Route::get('/editTD/{id}', [TripController::class, 'editTD']);
+Route::post('/updateTD/{id}', [TripController::class, 'updateTD']);
+Route::delete('/deleteTD/{id}', [TripController::class, 'destroyTD']);

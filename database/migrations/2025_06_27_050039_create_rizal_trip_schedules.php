@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('rizal_trip_schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('trip_id')->constrained('rizal_trip')->onDelete('cascade');
+            $table->foreignId('trip_id')->constrained('rizal_trip');
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('quota')->nullable();

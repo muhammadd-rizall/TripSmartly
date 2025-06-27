@@ -28,9 +28,8 @@
                                 {{-- Description --}}
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Deskripsi</label>
-                                    <input type="text" name="description" id="description"
-                                        class="form-control @error('description') is-invalid @enderror"
-                                        value="{{ $item->description }}">
+                                    <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror"
+                                        rows="4" required>{{ $item->description }}</textarea>
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -49,7 +48,7 @@
 
                                 {{-- price_per_day --}}
                                 <div class="mb-3">
-                                    <label for="price_per_day" class="form-label">Harga perhari*</label>
+                                    <label for="price_per_day" class="form-label">Harga perhari*(100,00)</label>
                                     <input type="number" name="price_per_day" id="price_per_day"
                                         class="form-control @error('price_per_day') is-invalid @enderror"
                                         value="{{ $item->price_per_day }}" required>
@@ -60,7 +59,7 @@
 
                                 {{-- image --}}
                                 <div class="mb-3">
-                                    <label for="image" class="form-label">Gambar Barang (opsional)</label>
+                                    <label for="image" class="form-label">Gambar Barang</label>
                                     <input type="file" name="image" id="image"
                                         class="form-control @error('image') is-invalid @enderror">
                                     @error('image')

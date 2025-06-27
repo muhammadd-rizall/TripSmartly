@@ -16,13 +16,14 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('meeting_point');
-            $table->decimal('price', 15, 2);
-            $table->string('quota');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->integer('quota');
+            $table->decimal('base_price', 15, 2);
+            $table->string('image');
+            $table->json('includes')->nullable();
+            $table->json('excludes')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->foreignId('region_id')->constrained('rizal_regions');
             $table->foreignId('category_id')->constrained('rizal_categories');
-            $table->string('image');
             $table->timestamps();
         });
     }

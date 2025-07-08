@@ -70,6 +70,9 @@
                             <a href="{{ route('openTrip') }}" class="block pl-14 pr-4 py-2 hover:bg-gray-700">
                                 Open Trip Page
                             </a>
+                            <a href="{{ route('tripSchedule') }}" class="block pl-14 pr-4 py-2 hover:bg-gray-700">
+                                Trip Schedule
+                            </a>
                         </div>
 
                     </li>

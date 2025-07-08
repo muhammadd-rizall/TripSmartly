@@ -9,7 +9,7 @@
 
                 {{-- Judul --}}
                 <div>
-                    <label for="title" class="block text-s font-small text-gray-800">
+                    <label for="title" class="block text-sm font-medium text-gray-800">
                         Judul <span class="text-red-500">*</span>
                     </label>
                     <input type="text" name="title" id="title"
@@ -22,7 +22,7 @@
 
                 {{-- Kategori --}}
                 <div>
-                    <label for="category_id" class="block text-s font-small text-gray-800">
+                    <label for="category_id" class="block text-sm font-medium text-gray-800">
                         Kategori <span class="text-red-500">*</span>
                     </label>
                     <select name="category_id" id="category_id"
@@ -42,7 +42,7 @@
 
                 {{-- Provinsi --}}
                 <div>
-                    <label for="region_id" class="block text-s font-small text-gray-800">
+                    <label for="region_id" class="block text-sm font-medium text-gray-800">
                         Provinsi <span class="text-red-500">*</span>
                     </label>
                     <select name="region_id" id="region_id"
@@ -62,7 +62,7 @@
 
                 {{-- Deskripsi --}}
                 <div>
-                    <label for="description" class="block text-s font-small text-gray-800">
+                    <label for="description" class="block text-sm font-medium text-gray-800">
                         Deskripsi
                     </label>
                     <textarea name="description" id="description" rows="4"
@@ -75,7 +75,7 @@
 
                 {{-- Titik Kumpul --}}
                 <div>
-                    <label for="meeting_point" class="block text-s font-small text-gray-800">
+                    <label for="meeting_point" class="block text-sm font-medium text-gray-800">
                         Titik Kumpul <span class="text-red-500">*</span>
                     </label>
                     <input type="text" name="meeting_point" id="meeting_point"
@@ -88,7 +88,7 @@
 
                 {{-- Harga --}}
                 <div>
-                    <label for="base_price" class="block text-s font-small text-gray-800">
+                    <label for="base_price" class="block text-sm font-medium text-gray-800">
                         Harga <span class="text-red-500">*</span>
                     </label>
                     <input type="number" name="base_price" id="base_price"
@@ -101,7 +101,7 @@
 
                 {{-- Kuota --}}
                 <div>
-                    <label for="quota" class="block text-s font-small text-gray-800">
+                    <label for="quota" class="block text-sm font-medium text-gray-800">
                         Kuota <span class="text-red-500">*</span>
                     </label>
                     <input type="number" name="quota" id="quota"
@@ -114,7 +114,7 @@
 
                 {{-- Harga Termasuk --}}
                 <div>
-                    <label for="includes" class="block text-s font-small text-gray-800">
+                    <label for="includes" class="block text-sm font-medium text-gray-800">
                         Harga Termasuk <span class="text-red-500">*</span>
                     </label>
                     <textarea name="includes" id="includes" rows="4" placeholder="Transportasi, Akomodasi, Makan"
@@ -128,7 +128,7 @@
 
                 {{-- Harga Tidak Termasuk --}}
                 <div>
-                    <label for="excludes" class="block text-s font-small text-gray-800">
+                    <label for="excludes" class="block text-sm font-medium text-gray-800">
                         Harga Tidak Termasuk <span class="text-red-500">*</span>
                     </label>
                     <textarea name="excludes" id="excludes" rows="4" placeholder="Obat pribadi, Uang pribadi, Dll"
@@ -142,7 +142,7 @@
 
                 {{-- Gambar --}}
                 <div>
-                    <label for="image" class="block text-s font-small text-gray-800">
+                    <label for="image" class="block text-sm font-medium text-gray-800">
                         Gambar Barang <span class="text-red-500">*</span>
                     </label>
                     <input type="file" name="image" id="image"
@@ -155,7 +155,7 @@
 
                 {{-- Status --}}
                 <div>
-                    <label class="block text-s font-small text-gray-800">
+                    <label class="block text-sm font-medium text-gray-800">
                         Status <span class="text-red-500">*</span>
                     </label>
                     <div class="flex items-center space-x-8 mt-2">

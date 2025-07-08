@@ -1,117 +1,108 @@
-@extends('layouts.templets')
+@extends('admins.dashboard')
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-8">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="text-centr">
-                            <div class="mb-4">
-                                <h3>Input Data Trip Schedule</h3>
-                            </div>
+    <div class="max-w-4xl mx-auto px-4 py-6">
+        <div class="bg-white rounded-3xl shadow-2xl p-8">
+            <h3 class="text-3xl font-bold mb-8 text-gray-800 text-center">Edit Data Trip Schedule</h3>
 
+            <form action="/update-trip-schedule/{{ $tripS->id }}" method="post" enctype="multipart/form-data" class="space-y-6">
+                @csrf
 
-                            <form action="/update-trip-schedule/{{ $tripS->id }}" method="post" enctype="multipart/form-data">
-                                @csrf
-
-
-                                {{-- trip --}}
-                                <div class="mb-3">
-                                    <label for="trip_id" class="form-label">Trip</label>
-                                    <select name="trip_id" id="trip_id"
-                                        class="form-select @error('trip_id') is-invalid @enderror" required>
-                                        <option value="">-- choose Trip --</option>
-                                        @foreach ($tripSchedules as $tripSchedule)
-                                            <option value="{{ $tripSchedule->id }}"
-                                                {{ $tripS->trip_id == $tripSchedule->id ? 'selected' : '' }}>
-                                                {{ $tripSchedule->title }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('trip_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                {{-- tanggal mulai --}}
-                                <div class="mb-3">
-                                    <label for="start_date" class="form-label">Tanggal Mulai*</label>
-                                    <input type="date" name="start_date" id="start_date"
-                                        class="form-control @error('start_date') is-invalid @enderror"
-                                        value="{{ $tripS->start_date }}" required>
-                                    @error('start_date')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                {{-- tanggal akhir --}}
-                                <div class="mb-3">
-                                    <label for="end_date" class="form-label">Tanggal Akhir*</label>
-                                    <input type="date" name="end_date" id="end_date"
-                                        class="form-control @error('end_date') is-invalid @enderror"
-                                        value="{{ $tripS->end_date }}" required>
-                                    @error('end_date')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                {{-- kuota --}}
-                                <div class="mb-3">
-                                    <label for="quota" class="form-label">Quota*</label>
-                                    <input type="number" name="quota" id="quota"
-                                        class="form-control @error('quota') is-invalid @enderror"
-                                        value="{{ $tripS->quota }}" required>
-                                    @error('quota')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                {{--  price --}}
-                                <div class="mb-3">
-                                    <label for="price" class="form-label">Harga*</label>
-                                    <input type="number" name="price" id="price"
-                                        class="form-control @error('price') is-invalid @enderror"
-                                        value="{{ $tripS->price }}" required>
-                                    @error('price')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-
-                                {{-- Status --}}
-                                <div class="mb-3">
-                                    <label class="form-label">Status*</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="status" id="open"
-                                            value="open" {{$tripS->status == 'open' ? 'checked' : '' }} required>
-                                        <label class="form-check-label" for="open">
-                                            open
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="status" id="closed"
-                                            value="closed" {{ $tripS->status == 'inactive' ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="closed">
-                                            closed
-                                        </label>
-                                    </div>
-                                    @error('status')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-
-
-                                {{-- Buttons --}}
-                                <div class="d-flex justify-content-between mt-4">
-                                    <a href="/trip-schedule" class="btn btn-secondary">Back</a>
-                                    <button type="submit" class="btn btn-primary">save</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                {{-- Trip --}}
+                <div>
+                    <label for="trip_id" class="block text-sm font-medium text-gray-800">Trip <span class="text-red-500">*</span></label>
+                    <select name="trip_id" id="trip_id"
+                        class="mt-2 block w-full border border-gray-500 rounded-md py-2 px-2 text-black focus:border-blue-300 focus:ring-blue-200 focus:ring focus:outline-none"
+                        required>
+                        <option value="">-- Pilih Trip --</option>
+                        @foreach ($tripSchedules as $tripSchedule)
+                            <option value="{{ $tripSchedule->id }}" {{ $tripS->trip_id == $tripSchedule->id ? 'selected' : '' }}>
+                                {{ $tripSchedule->title }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('trip_id')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
-            </div>
+
+                {{-- Tanggal Mulai --}}
+                <div>
+                    <label for="start_date" class="block text-sm font-medium text-gray-800">Tanggal Mulai <span class="text-red-500">*</span></label>
+                    <input type="date" name="start_date" id="start_date"
+                        class="mt-2 block w-full border border-gray-500 rounded-md py-2 px-2 text-black focus:border-blue-300 focus:ring-blue-200 focus:ring focus:outline-none"
+                        value="{{ $tripS->start_date }}" required>
+                    @error('start_date')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Tanggal Akhir --}}
+                <div>
+                    <label for="end_date" class="block text-sm font-medium text-gray-800">Tanggal Akhir <span class="text-red-500">*</span></label>
+                    <input type="date" name="end_date" id="end_date"
+                        class="mt-2 block w-full border border-gray-500 rounded-md py-2 px-2 text-black focus:border-blue-300 focus:ring-blue-200 focus:ring focus:outline-none"
+                        value="{{ $tripS->end_date }}" required>
+                    @error('end_date')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Kuota --}}
+                <div>
+                    <label for="quota" class="block text-sm font-medium text-gray-800">Quota <span class="text-red-500">*</span></label>
+                    <input type="number" name="quota" id="quota"
+                        class="mt-2 block w-full border border-gray-500 rounded-md py-2 px-2 text-black focus:border-blue-300 focus:ring-blue-200 focus:ring focus:outline-none"
+                        value="{{ $tripS->quota }}" required>
+                    @error('quota')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Harga --}}
+                <div>
+                    <label for="price" class="block text-sm font-medium text-gray-800">Harga <span class="text-red-500">*</span></label>
+                    <input type="number" name="price" id="price"
+                        class="mt-2 block w-full border border-gray-500 rounded-md py-2 px-2 text-black focus:border-blue-300 focus:ring-blue-200 focus:ring focus:outline-none"
+                        value="{{ $tripS->price }}" required>
+                    @error('price')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Status --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-800">Status <span class="text-red-500">*</span></label>
+                    <div class="flex items-center space-x-8 mt-2">
+                        <label class="inline-flex items-center space-x-2">
+                            <input type="radio" name="status" value="open"
+                                class="text-black focus:ring-blue-200"
+                                {{ $tripS->status == 'open' ? 'checked' : '' }} required>
+                            <span class="text-black text-sm">Open</span>
+                        </label>
+                        <label class="inline-flex items-center space-x-2">
+                            <input type="radio" name="status" value="closed"
+                                class="text-black focus:ring-blue-200"
+                                {{ $tripS->status == 'closed' ? 'checked' : '' }} required>
+                            <span class="text-black text-sm">Closed</span>
+                        </label>
+                    </div>
+                    @error('status')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Buttons --}}
+                <div class="flex justify-between pt-4">
+                    <a href="/trip-schedule"
+                        class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">
+                        Kembali
+                    </a>
+                    <button type="submit"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                        Simpan
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 @endsection

@@ -32,7 +32,7 @@ Route::delete('/delete-trip/{id}',[TripController::class, 'destroy']);
 
 
 //route trip Schedule
-Route::get('/trip-schedule', [TripController::class, 'indexSchedule']);
+Route::get('/trip-schedule', [TripController::class, 'indexSchedule'])->name('tripSchedule');
 Route::get('create-trip-schedule', [TripController::class, 'createSchedule']);
 Route::post('/input-trip-schedule', [TripController::class, 'storeSchedule']);
 Route::get('/edit-trip-schedule/{id}', [TripController::class, 'editSchedule']);

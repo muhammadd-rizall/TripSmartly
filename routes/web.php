@@ -10,7 +10,7 @@ Route::get('/', function () {
 
 
 //route rental barang
-Route::get('/rental_item', [RentalItemController::class, 'itemRental']);
+Route::get('/rental_item', [RentalItemController::class, 'itemRental'])->name('itemRental');
 Route::get('create-item-rental', [RentalItemController::class, 'create'])->name('createItemRental');
 Route::post('/input-rental-item', [RentalItemController::class, 'store']);
 Route::get('/edit-rental/{id}', [RentalItemController::class, 'edit']);

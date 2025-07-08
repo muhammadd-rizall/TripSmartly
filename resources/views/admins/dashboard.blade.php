@@ -48,14 +48,16 @@
                         </a>
                     </li>
 
-                    <!-- Profile with submenu -->
+                    <!-- Open trip with submenu -->
                     <li>
                         <button @click="submenu === 'opentrip' ? submenu = null : submenu = 'opentrip'"
                             class="flex items-center w-full p-4 hover:bg-gray-700 focus:outline-none">
                             <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
-                                  </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round"
+                                        d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
+                                </svg>
 
                             </svg>
                             <span x-show="open" class="ml-4 flex-1 text-left">Open Trip</span>
@@ -83,11 +85,45 @@
 
                     </li>
 
+                    <!-- Rental Item with submenu -->
+                    <li>
+                        <button @click="submenu === 'rentalitem' ? submenu = null : submenu = 'rentalitem'"
+                            class="flex items-center w-full p-4 hover:bg-gray-700 focus:outline-none">
+
+                            <!-- Icon box (dari heroicons / lucide) -->
+                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 21L20.131 16.792c.316-.164.474-.245.589-.366a1 1 0 0 0 .226-.373c.054-.159.054-.336.054-.692V7.533M12 21L3.869 16.792c-.316-.164-.474-.245-.589-.366a1.009 1.009 0 0 1-.226-.373C3 15.894 3 15.716 3 15.359V7.533M12 21v-9.063m9-4.404l-9 4.404m9-4.404L12.73 2.849c-.267-.138-.4-.208-.541-.235a.994.994 0 0 0-.378 0c-.14.027-.274.097-.542.235L3 7.533m0 0l9 4.404" />
+                            </svg>
+
+                            <!-- Label -->
+                            <span x-show="open" class="ml-4 flex-1 text-left">Rental Item</span>
+
+                            <!-- Chevron icon -->
+                            <svg x-show="open" :class="submenu === 'rentalitem' ? 'transform rotate-180' : ''"
+                                class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <!-- Submenu -->
+                        <div x-show="open && submenu === 'rentalitem'" class="bg-gray-900">
+                            <a href="{{ route('itemRental') }}" class="block pl-14 pr-4 py-2 hover:bg-gray-700">
+                                Item Rental
+                            </a>
+                            
+                        </div>
+                    </li>
+
+
                     <!-- Settings with submenu -->
                     <li>
                         <button @click="submenu === 'settings' ? submenu = null : submenu = 'settings'"
                             class="flex items-center w-full p-4 hover:bg-gray-700 focus:outline-none">
-                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>

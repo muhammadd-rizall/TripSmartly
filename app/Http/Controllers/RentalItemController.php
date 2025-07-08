@@ -36,7 +36,7 @@ class RentalItemController extends Controller
             'name'          => 'required|string',
             'description'   => 'nullable|string',
             'stock'         => 'required|integer|min:0',
-            'price_per_day' => 'required|numeric|min:0|decimal:2',
+            'price_per_day' => 'required|numeric|min:0',
             'image'         => 'required|image|mimes:jpg,png,jpeg,webp'
         ]);
 
@@ -63,7 +63,7 @@ class RentalItemController extends Controller
     public function edit($id)
     {
         $item = RentalItem::find($id);
-        return view('admins.edit_rental_item', compact('item'));
+        return view('itemRental.edit_rental_item', compact('item'));
     }
 
     public function update(Request $request, $id)
@@ -73,7 +73,7 @@ class RentalItemController extends Controller
             'name'          => 'required|string',
             'description'   => 'nullable|string',
             'stock'         => 'required|integer|min:0',
-            'price_per_day' => 'required|numeric|min:0|decimal:2',
+            'price_per_day' => 'required|numeric|min:0',
             'image'         => 'required|image|mimes:jpg,png,jpeg,webp'
         ]);
 

@@ -23,7 +23,7 @@ Route::get('/rental-order',[RentalItemController::class,'rentalOrder']);
 
 
 //route trip
-Route::get('/trip',[TripController::class, 'indexTrip']);
+Route::get('/trip',[TripController::class, 'indexTrip'])->name('openTrip');
 Route::get('create-trip',[TripController::class,'create']);
 Route::post('/input-trip',[TripController::class, 'store']);
 Route::get('/edit-trip/{id}',[TripController::class, 'edit']);
@@ -57,3 +57,8 @@ Route::post('/input-itinerary', [TripController::class, 'storeIT']);
 Route::get('/edit-itinerary/{id}', [TripController::class, 'editIT']);
 Route::put('/update-itinerary/{id}', [TripController::class, 'updateIT']);
 Route::delete('/delete-itinerary/{id}', [TripController::class, 'destroyIT']);
+
+
+Route::get('dashboard', function () {
+    return view('admins.dashboard');
+})->name('dashboard');

@@ -76,6 +76,9 @@
                             <a href="{{ route('tripDestination') }}" class="block pl-14 pr-4 py-2 hover:bg-gray-700">
                                 Trip Destinantion
                             </a>
+                            <a href="{{ route('tripItineraries') }}" class="block pl-14 pr-4 py-2 hover:bg-gray-700">
+                                Trip Itineraries
+                            </a>
                         </div>
 
                     </li>

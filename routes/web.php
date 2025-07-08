@@ -51,11 +51,11 @@ Route::delete('/deleteTD/{id}', [TripController::class, 'destroyTD']);
 
 //route trip internaries
 
-Route::get('/itinerary', [TripController::class, 'indexIT']);
+Route::get('/itinerary', [TripController::class, 'indexIT'])->name('tripItineraries');
 Route::get('create-itinerary', [TripController::class, 'createIT']);
 Route::post('/input-itinerary', [TripController::class, 'storeIT']);
 Route::get('/edit-itinerary/{id}', [TripController::class, 'editIT']);
-Route::put('/update-itinerary/{id}', [TripController::class, 'updateIT']);
+Route::post('/update-itinerary/{id}', [TripController::class, 'updateIT']);
 Route::delete('/delete-itinerary/{id}', [TripController::class, 'destroyIT']);
 
 

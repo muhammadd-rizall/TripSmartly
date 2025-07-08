@@ -44,7 +44,7 @@
                 {{-- Deskripsi --}}
                 <div class="mb-6">
                     <label for="description" class="block text-sm font-medium text-gray-800">
-                        Deskripsi <span class="text-red-500">*</span>
+                        Deskripsi 
                     </label>
                     <textarea name="description" id="description" rows="3"
                         class="mt-2 block w-full border rounded-md py-2 px-2 text-black border-gray-500 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:outline-none {{ $errors->has('description') ? 'border-red-500' : '' }}"

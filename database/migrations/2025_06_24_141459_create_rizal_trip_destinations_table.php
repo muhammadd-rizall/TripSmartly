@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('trip_id')->constrained('rizal_trip');
             $table->string('place_name');
-            $table->text('decription')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

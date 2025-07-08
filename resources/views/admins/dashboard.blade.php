@@ -58,7 +58,7 @@
                                   </svg>
 
                             </svg>
-                            <span x-show="open" class="ml-4 flex-1 text-left">opentrip</span>
+                            <span x-show="open" class="ml-4 flex-1 text-left">Open Trip</span>
                             <svg x-show="open" :class="submenu === 'opentrip' ? 'transform rotate-180' : ''"
                                 class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -72,6 +72,9 @@
                             </a>
                             <a href="{{ route('tripSchedule') }}" class="block pl-14 pr-4 py-2 hover:bg-gray-700">
                                 Trip Schedule
+                            </a>
+                            <a href="{{ route('tripDestination') }}" class="block pl-14 pr-4 py-2 hover:bg-gray-700">
+                                Trip Destinantion
                             </a>
                         </div>
 

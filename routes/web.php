@@ -41,7 +41,7 @@ Route::delete('/delete-trip-schedule/{id}', [TripController::class, 'destroySche
 
 
 //route trip Destiantion
-Route::get('/trip-destination', [TripController::class, 'indexTd']);
+Route::get('/trip-destination', [TripController::class, 'indexTd'])->name('tripDestination');
 Route::get('createTD', [TripController::class, 'createTD']);
 Route::post('/inputTD', [TripController::class, 'storeTD']);
 Route::get('/editTD/{id}', [TripController::class, 'editTD']);

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RentalItemController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TripController;
 use Illuminate\Support\Facades\Route;
 
@@ -64,3 +65,8 @@ Route::delete('/delete-itinerary/{id}', [TripController::class, 'destroyIT']);
 Route::get('dashboard', function () {
     return view('admins.dashboard');
 })->name('dashboard');
+
+
+//reviews
+Route::get('/rental-reviews', [ReviewController::class, 'rentalReviews'])->name('rentalReviews');
+Route::get('/trip-reviews', [ReviewController::class, 'tripReviews'])->name('tripReviews');

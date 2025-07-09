@@ -16,12 +16,12 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->date('start_date');
             $table->date('end_date');
-            $table->decimal('total_price,',15,2);
-            $table->enum('retrun_status',['kembali','terlambat']);
+            $table->decimal('total_price',15,2);
+            $table->enum('retrun_status',['belum kembali','kembali','terlambat', 'hilang']);
             $table->text('pickup_location');
-            $table->text('delevery_location');
+            $table->text('delivery_location');
             $table->string('payment_methods');
-            $table->string('payment_status');
+            $table->enum('payment_status',['pending', 'paid', 'failed']);
             $table->text('notes');
             $table->enum('status', ['pending', 'confirmed', 'cancelled']);
             $table->timestamps();

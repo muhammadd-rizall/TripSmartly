@@ -19,7 +19,7 @@ Route::delete('/delete-rental/{id}', [RentalItemController::class, 'destroy']);
 
 
 //route order
-Route::get('/rental-order',[RentalItemController::class,'rentalOrder']);
+Route::get('/rental-order',[RentalItemController::class,'rentalOrder'])->name('rentalOrder');
 
 
 //route trip

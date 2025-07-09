@@ -17,7 +17,10 @@ return new class extends Migration
             $table->foreignId('trip_id')->constrained('rizal_trip');
             $table->decimal('total_price', 15, 2);
             $table->integer('participants');
-            $table->enum('status',['pending','confirmed','cancelled'])->default('pending');
+            $table->string('payment_methods');
+            $table->enum('payment_status', ['pending', 'paid', 'failed']);
+            $table->text('notes');
+            $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('pending');
             $table->timestamps();
         });
     }

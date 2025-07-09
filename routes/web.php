@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RentalItemController;
 use App\Http\Controllers\TripController;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +20,8 @@ Route::delete('/delete-rental/{id}', [RentalItemController::class, 'destroy']);
 
 
 //route order
-Route::get('/rental-order',[RentalItemController::class,'rentalOrder'])->name('rentalOrder');
+Route::get('/trip-order',[OrderController::class,'tripOrder'])->name('tripOrder');
+Route::get('/rental-order',[OrderController::class,'rentalOrder'])->name('rentalOrder');
 
 
 //route trip

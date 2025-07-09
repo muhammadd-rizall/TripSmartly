@@ -9,14 +9,16 @@
                     <tr>
                         <th class="px-4 py-3 text-center font-bold">No</th>
                         <th class="px-4 py-3 text-left font-bold">Nama Penyewa</th>
+                        <th class="px-4 py-3 text-left font-bold">Nama Barang</th>
                         <th class="px-4 py-3 text-left font-bold">Tanggal Mulai</th>
                         <th class="px-4 py-3 text-left font-bold">Tanggal Akhir</th>
                         <th class="px-6 py-3 text-left font-bold">Total Harga</th>
-                        <th class="px-4 py-3 text-left font-bold">Status Pengembalian</th>
+                        <th class="px-4 py-3 text-center font-bold">Status Pengembalian</th>
                         <th class="px-4 py-3 text-left font-bold">Lokasi Penjemputan</th>
                         <th class="px-4 py-3 text-left font-bold">Lokasi Pengantaran</th>
                         <th class="px-6 py-3 text-left font-bold">Metode Pembayaran</th>
                         <th class="px-6 py-3 text-left font-bold">Status Pembayaran</th>
+                        <th class="px-6 py-3 text-left font-bold">Catatan</th>
                         <th class="px-4 py-3 text-center font-bold">Status</th>
                         <th class="px-4 py-3 text-center min-w-[200px] font-bold">Aksi</th>
                     </tr>
@@ -28,7 +30,10 @@
                                 {{ $index + $rentalOrders->firstItem() }}
                             </td>
                             <td class="px-4 py-4 text-gray-900 font-medium">
-                                {{ $rentalOrder->user->name ?? 'Unknown' }}
+                                {{ $rentalOrder->user->name }}
+                            </td>
+                            <td class="px-4 py-4 text-gray-900 font-medium">
+                                {{ $rentalOrder->rizal_rental_items->name }}
                             </td>
                             <td class="px-4 py-4 text-gray-900">
                                 {{ $rentalOrder->start_date }}
@@ -37,65 +42,34 @@
                                 {{ $rentalOrder->end_date }}
                             </td>
                             <td class="px-6 py-2 text-center font-semibold text-green-600">
-                                Rp {{ number_format($rentalOrder->total_price, 2, ',', '.') }}
+                                Rp {{ number_format($rentalOrder->total_price, 0, ',', '.') }}
                             </td>
+
+                            {{-- Status Pengembalian --}}
                             <td class="px-4 py-4 text-center">
                                 @switch($rentalOrder->return_status)
                                     @case('belum kembali')
-                                        <span
-                                            class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"></path>
-                                                <circle cx="12" cy="12" r="10" stroke="currentColor" fill="none">
-                                                </circle>
-                                            </svg>
+                                        <span class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                             Belum Kembali
                                         </span>
-                                    @break
-
+                                        @break
                                     @case('kembali')
-                                        <span
-                                            class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-                                            </svg>
+                                        <span class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
                                             Kembali
                                         </span>
-                                    @break
-
+                                        @break
                                     @case('terlambat')
-                                        <span
-                                            class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"></path>
-                                                <circle cx="12" cy="12" r="10" stroke="currentColor" fill="none">
-                                                </circle>
-                                            </svg>
+                                        <span class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
                                             Terlambat
                                         </span>
-                                    @break
-
+                                        @break
                                     @case('hilang')
-                                        <span
-                                            class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M18.364 5.636l-1.414 1.414M6.343 17.657l-1.415 1.415M5.636 5.636l1.415 1.415M17.657 17.657l1.414 1.414M12 9v2m0 4h.01">
-                                                </path>
-                                                <circle cx="12" cy="12" r="10" stroke="currentColor" fill="none">
-                                                </circle>
-                                            </svg>
+                                        <span class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
                                             Hilang
                                         </span>
-                                    @break
-
+                                        @break
                                     @default
-                                        <span
-                                            class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                                        <span class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
                                             -
                                         </span>
                                 @endswitch
@@ -113,62 +87,41 @@
                             <td class="px-6 py-4 text-gray-700">
                                 {{ $rentalOrder->payment_status }}
                             </td>
+                            <td class="px-6 py-4 text-gray-700">
+                                {{ $rentalOrder->notes }}
+                            </td>
+
+                            {{-- Status Order --}}
                             <td class="px-4 py-4 text-center">
                                 @switch($rentalOrder->status)
                                     @case('pending')
-                                        <span
-                                            class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"></path>
-                                                <circle cx="12" cy="12" r="10" stroke="currentColor" fill="none">
-                                                </circle>
-                                            </svg>
+                                        <span class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                             Pending
                                         </span>
-                                    @break
-
+                                        @break
                                     @case('confirmed')
-                                        <span
-                                            class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-                                            </svg>
+                                        <span class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
                                             Confirmed
                                         </span>
-                                    @break
-
+                                        @break
                                     @case('cancelled')
-                                        <span
-                                            class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12">
-                                                </path>
-                                            </svg>
+                                        <span class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
                                             Cancelled
                                         </span>
-                                    @break
-
+                                        @break
                                     @default
-                                        <span
-                                            class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
-                                            </svg>
+                                        <span class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
                                             {{ ucfirst($rentalOrder->status) }}
                                         </span>
                                 @endswitch
                             </td>
 
+                            {{-- Aksi --}}
                             <td class="px-4 py-4 text-center">
                                 <div class="flex justify-center gap-2 flex-wrap">
                                     <a href="#"
                                         class="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md text-xs font-medium transition duration-150 shadow-sm">
-                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
+                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -179,19 +132,18 @@
                                     </a>
 
                                     <form action="#" method="POST" class="inline-block"
-                                        onsubmit="return confirm('Are you sure you want to delete this trip?')">
+                                        onsubmit="return confirm('Are you sure you want to delete this rental order?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
                                             class="inline-flex items-center bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md text-xs font-medium transition duration-150 shadow-sm">
-                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                                </path>
-                                            </svg>
-                                            Delete
-                                        </button>
+                                            </path>
+                                        </svg>
+                                        Delete
+                                    </button>
                                     </form>
                                 </div>
                             </td>

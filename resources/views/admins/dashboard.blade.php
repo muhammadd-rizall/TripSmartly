@@ -143,6 +143,9 @@
 
                         <!-- Submenu -->
                         <div x-show="open && submenu === 'order'" class="bg-gray-900">
+                            <a href="{{ route('tripOrder') }}" class="block pl-14 pr-4 py-2 hover:bg-gray-700">
+                                Trip Order
+                            </a>
                             <a href="{{ route('rentalOrder') }}" class="block pl-14 pr-4 py-2 hover:bg-gray-700">
                                 Rental Order
                             </a>

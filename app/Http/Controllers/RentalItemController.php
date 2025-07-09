@@ -112,12 +112,5 @@ class RentalItemController extends Controller
 
 
 
-        //-------------
-        //Rental Orders
-        //-------------
 
-    public function rentalOrder(){
-        $rentalOrders = RentalOrder::latest()->paginate(10);
-        return view('itemRental.rental_orders', compact('rentalOrders'));
-    }
 }

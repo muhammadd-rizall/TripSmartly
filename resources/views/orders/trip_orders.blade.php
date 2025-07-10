@@ -3,12 +3,6 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <h1 class="text-2xl font-bold text-gray-800 mb-6">Data Trip Orders</h1>
 
-        @if(session('success'))
-            <div class="mb-4 p-3 bg-green-100 text-green-800 rounded">
-                {{ session('success') }}
-            </div>
-        @endif
-
         <div class="overflow-x-auto scrollbar-gutter-stable bg-white rounded-lg shadow">
             <table class="min-w-[1400px] w-full divide-y divide-gray-200 text-sm">
                 <thead class="bg-blue-50 text-gray-700 uppercase text-xs tracking-wider">
@@ -52,41 +46,86 @@
                             <!-- STATUS -->
                             <td class="px-4 py-4 text-center">
                                 @php
-                                    $statusColor = match($rentalOrder->status) {
-                                        'pending' => 'bg-yellow-100 text-yellow-800',
-                                        'confirmed' => 'bg-green-100 text-green-800',
-                                        'cancelled' => 'bg-red-100 text-red-800',
-                                        default => 'bg-gray-100 text-gray-800',
+                                    $statusColor = match($TO->status) {
+                                        'pending' => 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                                        'confirmed' => 'bg-green-100 text-green-800 border-green-200',
+                                        'cancelled' => 'bg-red-100 text-red-800 border-red-200',
+                                        default => 'bg-gray-100 text-gray-800 border-gray-200',
                                     };
                                 @endphp
 
-                                <span class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full {{ $statusColor }}">
-                                    {{ ucfirst($rentalOrder->status) }}
+                                <span class="inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded-full border {{ $statusColor }}">
+                                    @if($TO->status === 'pending')
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                                        </svg>
+                                    @elseif($TO->status === 'confirmed')
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                    @elseif($TO->status === 'cancelled')
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                        </svg>
+                                    @endif
+                                    {{ ucfirst($TO->status) }}
                                 </span>
 
-                                <div class="mt-2 flex justify-center gap-1">
-                                    @foreach (['confirmed' => 'green', 'cancelled' => 'red'] as $target => $color)
-                                        @if ($rentalOrder->status !== $target)
-                                            <form action="{{ route('rental-orders.updateStatus', $rentalOrder->id) }}" method="POST">
-                                                @csrf
-                                                @method('PATCH')
-                                                <input type="hidden" name="status" value="{{ $target }}">
-                                                <button type="submit" class="text-{{ $color }}-600 hover:text-{{ $color }}-800 text-xs">
-                                                    {{ ucfirst($target) }}
-                                                </button>
-                                            </form>
-                                        @endif
-                                    @endforeach
+                                <!-- STATUS ACTION BUTTONS -->
+                                <div class="mt-3 flex justify-center gap-2">
+                                    @if ($TO->status !== 'confirmed')
+                                        <form action="/update-status/{{ $TO->id }}" method="POST" class="inline-block">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="status" value="confirmed">
+                                            <button type="submit"
+                                                class="inline-flex items-center gap-1 px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white text-xs font-medium rounded-md transition duration-150 shadow-sm transform hover:scale-105">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                Konfirmasi
+                                            </button>
+                                        </form>
+                                    @endif
+
+                                    @if ($TO->status !== 'cancelled')
+                                        <form action="/update-status/{{ $TO->id }}" method="POST" class="inline-block"
+                                            onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="status" value="cancelled">
+                                            <button type="submit"
+                                                class="inline-flex items-center gap-1 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-xs font-medium rounded-md transition duration-150 shadow-sm transform hover:scale-105">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                                </svg>
+                                                Batalkan
+                                            </button>
+                                        </form>
+                                    @endif
+
+                                    @if ($TO->status === 'cancelled' && $TO->status !== 'pending')
+                                        <form action="/update-status/{{ $TO->id }}" method="POST" class="inline-block">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="status" value="pending">
+                                            <button type="submit"
+                                                class="inline-flex items-center gap-1 px-3 py-1.5 bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-medium rounded-md transition duration-150 shadow-sm transform hover:scale-105">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                                                </svg>
+                                                Pending
+                                            </button>
+                                        </form>
+                                    @endif
                                 </div>
                             </td>
-
-
 
                             <!-- AKSI -->
                             <td class="px-4 py-4 text-center">
                                 <div class="flex justify-center gap-2 flex-wrap">
                                     <a href="#"
-                                        class="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md text-xs font-medium transition duration-150 shadow-sm">
+                                        class="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md text-xs font-medium transition duration-150 shadow-sm transform hover:scale-105">
                                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -102,7 +141,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="inline-flex items-center bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md text-xs font-medium transition duration-150 shadow-sm">
+                                            class="inline-flex items-center bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md text-xs font-medium transition duration-150 shadow-sm transform hover:scale-105">
                                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

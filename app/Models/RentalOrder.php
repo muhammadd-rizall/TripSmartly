@@ -15,4 +15,9 @@ class RentalOrder extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function rizal_rental_item()
+    {
+        return $this->belongsTo(RentalItem::class, 'rental_items_id');
+    }
 }

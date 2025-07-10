@@ -22,7 +22,13 @@ Route::delete('/delete-rental/{id}', [RentalItemController::class, 'destroy']);
 
 //route order
 Route::get('/trip-order',[OrderController::class,'tripOrder'])->name('tripOrder');
+Route::patch('/update-status/{id}',[OrderController::class,'updateStatus']);
+Route::delete('/delete-trip-order/{id}', [OrderController::class, 'destroy']);
+
 Route::get('/rental-order',[OrderController::class,'rentalOrder'])->name('rentalOrder');
+Route::patch('/update-return-status/{id}',[OrderController::class,'updateReturnStatus']);
+Route::patch('/update-order-status/{id}',[OrderController::class,'updateOrderStatus']);
+Route::delete('/delete-rental-order/{id}', [OrderController::class, 'destroyRentalOrder']);
 
 
 //route trip

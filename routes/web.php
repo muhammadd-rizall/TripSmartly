@@ -1,14 +1,15 @@
 <?php
 
+use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RentalItemController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TripController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 
 //route rental barang
@@ -76,3 +77,12 @@ Route::get('dashboard', function () {
 //reviews
 Route::get('/rental-reviews', [ReviewController::class, 'rentalReviews'])->name('rentalReviews');
 Route::get('/trip-reviews', [ReviewController::class, 'tripReviews'])->name('tripReviews');
+
+
+//landing page
+Route::prefix('landing-page')->group(function(){
+    Route::get('/',[LandingPageController::class, 'home'])->name('landingPageHome');
+    // Route::get('/categories',[LandingPageController::class, 'categories'])->name('categories');
+    // Route::get('/triphome',[LandingPageController::class, 'tripHome'])->name('tripHome');
+});
+

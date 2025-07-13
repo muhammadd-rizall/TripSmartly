@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RentalCategories;
 use App\Models\RentalItem;
 use App\Models\RentalOrder;
 use Illuminate\Http\Request;
@@ -27,13 +28,15 @@ class RentalItemController extends Controller
     //tampilan input rental item
     public function create()
     {
-        return view('itemRental.create_rental_item');
+        $categories = RentalCategories::all();
+        return view('itemRental.create_rental_item', compact('categories'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'name'          => 'required|string',
+            'category_id'   => 'required|exists:rizal_rental_categories,id',
             'description'   => 'nullable|string',
             'stock'         => 'required|integer|min:0',
             'price_per_day' => 'required|numeric|min:0',
@@ -49,6 +52,7 @@ class RentalItemController extends Controller
         RentalItem::create(
             [
                 'name'          => $validated['name'],
+                'category_id'   => $validated['category_id'],
                 'description'   => $validated['description'],
                 'stock'         => $validated['stock'],
                 'price_per_day' => $validated['price_per_day'],
@@ -62,8 +66,9 @@ class RentalItemController extends Controller
     //edit Rental Item
     public function edit($id)
     {
+        $categories = RentalCategories::all();
         $item = RentalItem::find($id);
-        return view('itemRental.edit_rental_item', compact('item'));
+        return view('itemRental.edit_rental_item', compact('item','categories'));
     }
 
     public function update(Request $request, $id)
@@ -71,6 +76,7 @@ class RentalItemController extends Controller
 
         $validated = $request->validate([
             'name'          => 'required|string',
+            'category_id'   => 'required|exists:rizal_rental_categories,id',
             'description'   => 'nullable|string',
             'stock'         => 'required|integer|min:0',
             'price_per_day' => 'required|numeric|min:0',
@@ -86,6 +92,7 @@ class RentalItemController extends Controller
 
         //update data
         $item->name = $validated['name'];
+        $item->ncategory_idame = $validated['category_id'];
         $item->description = $validated['description'];
         $item->stock = $validated['stock'];
         $item->price_per_day = $validated['price_per_day'];

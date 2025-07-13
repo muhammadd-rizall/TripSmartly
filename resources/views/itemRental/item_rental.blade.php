@@ -14,6 +14,7 @@
                     <tr>
                         <th class="px-4 py-3 text-center font-bold">Nomor</th>
                         <th class="px-4 py-3 text-center font-bold">Nama Barang</th>
+                        <th class="px-4 py-3 text-center font-bold">Kategori</th>
                         <th class="px-4 py-3 text-center font-bold">Deskripsi</th>
                         <th class="px-4 py-3 text-center font-bold">Stok</th>
                         <th class="px-4 py-3 text-center font-bold">Harga Perhari</th>
@@ -29,6 +30,7 @@
                             </td>
                             <td class="px-4 py-4 text-gray-900 font-medium text-center">{{ $item->name }}</td>
                             <td class="px-4 py-4 text-gray-900 font-medium">{{ $item->description }}</td>
+                            <td class="px-4 py-4 text-gray-900 font-medium">{{ $item->rizal_rental_categories->name }}</td>
                             <td class="px-4 py-4 text-gray-900 font-medium text-center">{{ $item->stock }}</td>
                             <td class="px-6 py-4 text-center font-semibold text-green-600">
                                 Rp {{ number_format($item->price_per_day, 0, ',', '.') }}

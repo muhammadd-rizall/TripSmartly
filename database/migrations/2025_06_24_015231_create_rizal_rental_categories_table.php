@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rizal_rental_items', function (Blueprint $table) {
+        Schema::create('rizal_rental_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('rental_categories_id')->constrained('rizal_rental_categories');
-            $table->text('description')->nullable();
-            $table->integer('stock');
-            $table->decimal('price_per_day', 15,2);
-            $table->string('image');
+            $table->string('description');
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rizal_rental_items');
+        Schema::dropIfExists('rizal_rental_categories');
     }
 };

@@ -18,7 +18,8 @@ class RentalItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'           => $this->faker->words(2, true),          // e.g. "Camping Tent"
+            'name'           => $this->faker->words(2, true),
+            'rental_categories_id'   => $this->faker->numberBetween(1, 5),
             'description'    => $this->faker->paragraph(),
             'stock'          => $this->faker->numberBetween(1, 50),
             'price_per_day'  => $this->faker->randomFloat(2, 50000, 500000),  // Rp

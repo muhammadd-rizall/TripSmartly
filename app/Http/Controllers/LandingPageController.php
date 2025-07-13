@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Categories;
 use App\Models\RentalCategories;
 use App\Models\RentalItem;
+use App\Models\ReviewTrip;
 use App\Models\Trip;
 use App\Models\TripSchedule;
 use Illuminate\Http\Request;
@@ -17,9 +18,11 @@ class LandingPageController extends Controller
         $categories = Categories::all();
 
         // join Trip ke TripSchedule
-        $openTrips = TripSchedule::with('rizal_trip.rizal_regions')->latest()->paginate(8);
+        $openTrips = TripSchedule::with(['rizal_trip', 'rizal_trip.rizal_regions'])->latest()->paginate(8);
 
-        return view('layouts.home_views', compact('categories', 'openTrips'));
+
+
+        return view('screens.home_views', compact('categories', 'openTrips'));
     }
     // public function categories(){
     //     $categories = Categories::all();
@@ -58,7 +61,7 @@ class LandingPageController extends Controller
             return $trip->rizal_trip->rizal_categories->name ?? 'Lainnya';
         });
 
-        return view('layouts.trip_views', compact('openTrips', 'categories'));
+        return view('screens.trip_views', compact('openTrips', 'categories'));
     }
 
 
@@ -92,6 +95,14 @@ class LandingPageController extends Controller
             return optional($item->rizal_rental_categories)->name ?? 'Lainnya';
         });
 
-        return view('layouts.rental_views', compact('categories', 'rentalItems'));
+        return view('screens.rental_views', compact('categories', 'rentalItems'));
+    }
+
+
+    public function tripDetails($id){
+        $trip = Trip::with('rizal_regions', 'rizal_trip_destinations')->findOrFail($id);
+        $reviews = ReviewTrip::where('trip_id', $id)->get();
+
+        return view('screens.detail_trip', compact('trip', 'reviews'));
     }
 }

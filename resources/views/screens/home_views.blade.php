@@ -34,16 +34,20 @@
             </div>
         </div>
 
-        <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
+        <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {{-- Loop through open trips --}}
             @forelse ($openTrips as $openTrip)
-                <div
-                    class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-102 transition-transform duration-300 max-w-f">
+                <a href="{{ route('tripDetails', trim($openTrip->rizal_trip->id)) }}"
+                    class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-102 transition-transform duration-300 max-w-full">
+
                     {{-- Trip Image --}}
-                    <img src="{{ $openTrip->rizal_trip->image }}" alt="{{ $openTrip->rizal_trip->title }}"
-                        class="w-full h-60 object-cover">
+                    @if ($openTrip->rizal_trip && $openTrip->rizal_trip->image)
+                        <img src="{{ asset('storage/' . $openTrip->rizal_trip->image) }}"
+                            alt="{{ $openTrip->rizal_trip->title }}" class="w-full h-60 object-cover">
+                    @endif
 
                     <div class="p-4 space-y-3">
+                        {{-- Title --}}
                         <h2 class="text-lg font-bold text-gray-800 truncate">
                             {{ $openTrip->rizal_trip->title }}
                         </h2>
@@ -87,7 +91,6 @@
                             </span>
                         </div>
 
-
                         {{-- Rating --}}
                         <div class="flex items-center gap-1 text-yellow-500 text-sm">
                             @for ($i = 1; $i <= 5; $i++)
@@ -100,11 +103,12 @@
                             <span class="ml-2 text-gray-700">4.7</span>
                         </div>
                     </div>
-                </div>
+                </a>
             @empty
                 <p class="text-gray-500">No trips found.</p>
             @endforelse
         </div>
+
     </div>
 
 

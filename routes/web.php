@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DetailTripController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RentalItemController;
@@ -83,7 +84,18 @@ Route::get('/trip-reviews', [ReviewController::class, 'tripReviews'])->name('tri
 Route::prefix('landing-page')->group(function(){
     Route::get('/',[LandingPageController::class, 'home'])->name('landingPageHome');
     Route::get('/trip-views',[LandingPageController::class, 'tripViews'])->name('tripViews');
+    Route::get('/trip-views/{id}',[DetailTripController::class, 'tripDetails'])->name('tripDetails');
+    Route::get('/trip-views/{id}/order',[DetailTripController::class, 'bookTrip'])->name('tripOrders');
+    Route::post('/trip-views/{id}/order',[DetailTripController::class, 'storeBooking'])->name('tripStore');
     Route::get('/rental-views',[LandingPageController::class, 'rentalViews'])->name('rentalViews');
     // Route::get('/triphome',[LandingPageController::class, 'tripHome'])->name('tripHome');
 });
 
+// Route::prefix('trip')->group(function () {
+//     Route::get('/', [DetailTripController::class, 'index'])->name('trip.index');
+//     Route::get('/{id}', [DetailTripController::class, 'show'])->name('trip.show');
+//     Route::get('/{id}/order', [DetailTripController::class, 'create'])->name('trip.order.create');
+//     Route::post('/{id}/order', [DetailTripController::class, 'store'])->name('trip.order.store');
+//     Route::get('/{id}/review', [DetailTripController::class, 'create'])->name('trip.review.create');
+//     Route::post('/{id}/review', [DetailTripController::class, 'store'])->name('trip.review.store');
+// });

@@ -87,7 +87,12 @@ Route::prefix('landing-page')->group(function(){
     Route::get('/trip-views/{id}',[DetailTripController::class, 'tripDetails'])->name('tripDetails');
     Route::get('/trip-views/{id}/order',[DetailTripController::class, 'bookTrip'])->name('tripOrders');
     Route::post('/trip-views/{id}/order',[DetailTripController::class, 'storeBooking'])->name('tripStore');
+
+
     Route::get('/rental-views',[LandingPageController::class, 'rentalViews'])->name('rentalViews');
+    Route::get('/rental-views/{id}',[DetailTripController::class, 'rentalDetails'])->name('rentalDetails');
+    Route::get('/rental-views/{id}/order',[DetailTripController::class, 'orderRental'])->name('orderRental');
+    Route::post('/rental-views/{id}/order',[DetailTripController::class, 'storeRental'])->name('storeRental');
     // Route::get('/triphome',[LandingPageController::class, 'tripHome'])->name('tripHome');
 });
 

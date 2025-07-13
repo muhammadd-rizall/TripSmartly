@@ -60,10 +60,13 @@
 
                 <div class="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                     @foreach ($item as $rentalItem)
-                        <div
+                        <a href="{{ route('rentalDetails', $rentalItem->id) }}"
                             class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300">
-                            <img src="{{ $rentalItem->image }}" alt="{{ $rentalItem->name }}"
-                                class="w-full h-40 object-cover">
+                            @if ($rentalItem->image)
+                                <img src="{{ asset('storage/' . $rentalItem->image) }}" alt="{{ $rentalItem->name }}"
+                                    class="w-full h-40 object-cover">
+                            @endif
+
 
                             <div class="p-4 space-y-3">
                                 {{-- Title --}}
@@ -110,7 +113,7 @@
                                     <span class="ml-2 text-gray-700">4.7</span>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     @endforeach
                 </div>
             </div>

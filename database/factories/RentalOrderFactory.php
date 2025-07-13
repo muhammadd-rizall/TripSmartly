@@ -26,6 +26,7 @@ class RentalOrderFactory extends Factory
             'rental_items_id' => RentalItem::inRandomOrder()->value('id') ?? RentalItem::factory()->create()->id,
             'start_date' => $startDate->format('Y-m-d'),
             'end_date' => $endDate->format('Y-m-d'),
+            'quantity' => $this->faker->numberBetween(1,50),
             'total_price' => $this->faker->randomFloat(2, 50000, 1000000),
             'retrun_status' => $this->faker->randomElement(['belum kembali', 'kembali', 'terlambat', 'hilang']),
             'pickup_location' => $this->faker->address(),

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Trip;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -21,6 +22,17 @@ class TripFactory extends Factory
     public function definition(): array
     {
 
+        // Nama file random yang disalin ke storage
+        $fakeFileName = 'trip/' . Str::random(10) . '.jpg';
+
+        // Pastikan folder ada
+        Storage::disk('public')->makeDirectory('trip');
+
+        // Salin dari resources/seed_images/sample.jpg ke storage
+        Storage::disk('public')->put(
+            $fakeFileName,
+            file_get_contents(resource_path('seed_images/sample1.jpg'))
+        );
 
         return [
             'title'         => $this->faker->sentence(3),
@@ -28,7 +40,7 @@ class TripFactory extends Factory
             'meeting_point' => $this->faker->city(),
             'quota'         => $this->faker->numberBetween(10, 100),
             'base_price'    => $this->faker->randomFloat(2, 100000, 5000000),
-            'image'         => 'https://picsum.photos/seed/' . Str::random(10) . '/480/640',
+            'image'         => $fakeFileName,
             'includes'      => $this->faker->paragraph(),
             'excludes'      => $this->faker->paragraph(),
             'status'        => $this->faker->randomElement(['active', 'inactive']),

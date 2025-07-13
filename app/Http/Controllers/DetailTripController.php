@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Categories, ReviewTrip, Trip, TripOrder};
+use App\Models\{Categories, RentalItem, RentalOrder, ReviewTrip, Trip, TripOrder};
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -189,5 +189,98 @@ class DetailTripController extends Controller
         ]);
 
         return back()->with('success', 'Review berhasil disimpan!');
+    }
+
+
+
+
+
+
+    ///rental order
+    public function rentalDetails($id)
+    {
+        // Ambil item rental berdasarkan ID
+        $rentalItem = RentalItem::findOrFail($id);
+
+        // Hitung stok yang tersedia (bisa disesuaikan logikanya)
+        $availableStock = $rentalItem->stock;
+
+        // Ambil semua review terkait rental ini (pastikan relasinya ada di model)
+        $rentalReviews = $rentalItem->rental_reviews ?? collect();
+
+        // Hitung rata-rata rating (default 0 jika tidak ada review)
+        $averageRating = $rentalReviews->count() > 0
+            ? round($rentalReviews->avg('rating'), 1)
+            : 0;
+
+        return view('screens.detail_rental', compact(
+            'rentalItem',
+            'availableStock',
+            'rentalReviews',
+            'averageRating'
+        ));
+    }
+
+
+
+
+    public function orderRental($id)
+    {
+        $rentalItem = RentalItem::with('rizal_rental_categories')->findOrFail($id);
+
+        // Hitung stok yang sudah dipesan
+        $bookedQuantity = RentalOrder::where('rental_items_id', $id)
+            ->where('payment_status', 'paid')
+            ->sum('quantity');
+
+        $availableStock = max($rentalItem->stock - $bookedQuantity, 0);
+
+        if ($availableStock <= 0) {
+            return back()->with('error', 'Stock barang ini sudah habis!');
+        }
+
+        return view('screens.order_rental', compact('rentalItem', 'availableStock'));
+    }
+
+
+    public function storeRental(Request $request, $id)
+    {
+        // Validasi form
+        $data = $request->validate([
+            'quantity'           => 'required|integer|min:1',
+            'payment_methods'    => 'required|in:transfer,qris,cod',
+            'delivery_location'  => 'required|string|max:255',
+            'special_request'    => 'nullable|string|max:1000',
+        ]);
+
+        $rentalItem = RentalItem::findOrFail($id);
+
+        // Hitung sisa stok
+        $bookedQuantity = RentalOrder::where('rental_items_id', $id)
+            ->where('payment_status', 'paid')
+            ->sum('quantity');
+
+        $availableStock = max($rentalItem->stock - $bookedQuantity, 0);
+
+        if ($data['quantity'] > $availableStock) {
+            return back()->with('error', 'Stok tidak mencukupi untuk jumlah yang diminta!');
+        }
+
+        // Hitung total harga
+        $totalPrice = $rentalItem->price_per_day * $data['quantity'];
+
+        // Simpan pesanan
+        RentalOrder::create([
+            'rental_items_id'   => $id,
+            'quantity'          => $data['quantity'],
+            'total_price'       => $totalPrice,
+            'delivery_location' => $data['delivery_location'],
+            'payment_method'    => $data['payment_methods'],
+            'special_request'   => $data['special_request'],
+            'payment_status'    => 'pending'
+        ]);
+
+        return redirect()->route('rentalDetails', $id)
+            ->with('success', 'Booking berhasil! Silakan lakukan pembayaran.');
     }
 }

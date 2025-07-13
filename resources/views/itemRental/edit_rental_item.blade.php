@@ -22,20 +22,20 @@
 
                 {{-- Kategori --}}
                 <div>
-                    <label for="category_id" class="block text-sm font-medium text-gray-800">
+                    <label for="rental_categories_id" class="block text-sm font-medium text-gray-800">
                         Kategori <span class="text-red-500">*</span>
                     </label>
-                    <select name="category_id" id="category_id"
-                        class="mt-2 block w-full  border border-gray-500 text-black focus:border-blue-300 focus:ring-blue-200 focus:ring focus:outline-none rounded-md py-2 px-2 {{ $errors->has('category_id') ?  'border-red-500' : '' }}"
+                    <select name="rental_categories_id" id="rental_categories_id"
+                        class="mt-2 block w-full  border border-gray-500 text-black focus:border-blue-300 focus:ring-blue-200 focus:ring focus:outline-none rounded-md py-2 px-2 {{ $errors->has('rental_categories_id') ?  'border-red-500' : '' }}"
                         required>
                         <option value="">-- Pilih Kategori --</option>
                         @foreach ($categories as $rental)
-                            <option value="{{ $rental->id }}" {{ old('category_id') == $rental->id ? 'selected' : '' }}>
+                            <option value="{{ $rental->id }}" {{ old('rental_categories_id') == $rental->id ? 'selected' : '' }}>
                                 {{ $rental->name }}
                             </option>
                         @endforeach
                     </select>
-                    @error('category_id')
+                    @error('rental_categories_id')
                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                     @enderror
                 </div>

@@ -41,10 +41,12 @@ class DatabaseSeeder extends Seeder
 
         // Buat 10 rental items
         // Pastikan ada data user dan rental_item
-       
+
         RentalItem::factory(10)->create();
 
         // Buat 20 rental order dengan foreign key valid
         RentalOrder::factory(20)->create();
     }
+
+    
 }

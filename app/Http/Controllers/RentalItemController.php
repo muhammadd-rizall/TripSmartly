@@ -36,7 +36,7 @@ class RentalItemController extends Controller
     {
         $validated = $request->validate([
             'name'          => 'required|string',
-            'category_id'   => 'required|exists:rizal_rental_categories,id',
+            'rental_categories_id'   => 'required|exists:rizal_rental_categories,id',
             'description'   => 'nullable|string',
             'stock'         => 'required|integer|min:0',
             'price_per_day' => 'required|numeric|min:0',
@@ -52,7 +52,7 @@ class RentalItemController extends Controller
         RentalItem::create(
             [
                 'name'          => $validated['name'],
-                'category_id'   => $validated['category_id'],
+                'rental_categories_id'   => $validated['rental_categories_id'],
                 'description'   => $validated['description'],
                 'stock'         => $validated['stock'],
                 'price_per_day' => $validated['price_per_day'],
@@ -76,7 +76,7 @@ class RentalItemController extends Controller
 
         $validated = $request->validate([
             'name'          => 'required|string',
-            'category_id'   => 'required|exists:rizal_rental_categories,id',
+            'rental_categories_id'   => 'required|exists:rizal_rental_categories,id',
             'description'   => 'nullable|string',
             'stock'         => 'required|integer|min:0',
             'price_per_day' => 'required|numeric|min:0',
@@ -92,7 +92,7 @@ class RentalItemController extends Controller
 
         //update data
         $item->name = $validated['name'];
-        $item->ncategory_idame = $validated['category_id'];
+        $item->nrental_categories_idame = $validated['rental_categories_id'];
         $item->description = $validated['description'];
         $item->stock = $validated['stock'];
         $item->price_per_day = $validated['price_per_day'];

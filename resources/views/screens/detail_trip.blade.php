@@ -123,7 +123,7 @@
             <div class="bg-white p-6 rounded-xl shadow-lg">
                 <h3 class="text-xl font-semibold text-gray-800 mb-4">Deskripsi</h3>
                 @if ($openTrip->description)
-                    <p class="text-gray-600 leading-relaxed">{{ $openTrip->description }}</p>
+                    <p class="text-gray-600 leading-relaxed">{{ Str::words($openTrip->description, 200, '...') }}</p>
                 @else
                     <p class="text-gray-400 italic">Deskripsi belum tersedia untuk trip ini.</p>
                 @endif
@@ -234,45 +234,6 @@
                 </div>
             @endif
 
-
-
-            {{-- Reviews --}}
-            <div class="bg-white p-6 rounded-xl shadow-lg">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4">Review</h3>
-                @if ($tripReviews->count() > 0)
-                    <div class="space-y-4">
-                        @foreach ($tripReviews as $review)
-                            <div class="border-b border-gray-200 pb-4 last:border-b-0">
-                                <div class="flex items-center gap-3 mb-2">
-                                    <div class="w-10 h-10 bg-sky-500 rounded-full flex items-center justify-center">
-                                        <span class="text-white font-semibold">
-                                            {{ substr($review->user_name ?? 'G', 0, 1) }}
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium text-gray-800">{{ $review->user_name ?? 'Guest' }}</h4>
-                                        <div class="flex items-center gap-1">
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                <svg class="w-4 h-4 {{ $i <= $review->rating ? 'text-yellow-400' : 'text-gray-300' }}"
-                                                    fill="currentColor" viewBox="0 0 24 24">
-                                                    <path
-                                                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                                                </svg>
-                                            @endfor
-                                            <span class="text-sm text-gray-500 ml-1">{{ $review->rating }}/5</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="text-gray-700 ml-13">{{ $review->comment }}</p>
-                                <p class="text-sm text-gray-500 mt-2 ml-13">{{ $review->created_at->diffForHumans() }}
-                                </p>
-                            </div>
-                        @endforeach
-                    </div>
-                @else
-                    <p class="text-gray-500">Belum ada review untuk trip ini.</p>
-                @endif
-            </div>
         </div>
 
         {{-- Right Column --}}
@@ -336,6 +297,102 @@
             </div>
         </div>
     </div>
+
+    {{-- Reviews Section --}}
+    <div class="mt-12">
+        <div class="bg-sky-100 rounded-xl shadow-lg p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Reviews & Rating</h2>
+                <button class="bg-sky-500 text-white px-4 py-2 rounded-lg hover:bg-sky-600 transition-colors">
+                    Tulis Review
+                </button>
+            </div>
+
+            <!-- Rating Summary -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-sky-600 mb-2">{{ number_format($averageRating, 1) }}</div>
+                    <div class="flex items-center justify-center gap-1 mb-2">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <svg class="w-5 h-5" fill="{{ $i <= round($averageRating) ? '#facc15' : 'none' }}"
+                                stroke="#facc15" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg>
+                        @endfor
+                    </div>
+                    <p class="text-gray-600">{{ $tripReviews->count() }} Reviews</p>
+                </div>
+
+                <div class="md:col-span-2">
+                    <div class="space-y-2">
+                        @for ($i = 5; $i >= 1; $i--)
+                            @php
+                                $count = $tripReviews->where('rating', $i)->count();
+                                $percentage = $tripReviews->count() > 0 ? ($count / $tripReviews->count()) * 100 : 0;
+                            @endphp
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm text-gray-600 w-8">{{ $i }}★</span>
+                                <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-yellow-400 h-2 rounded-full" style="width: {{ $percentage }}%">
+                                    </div>
+                                </div>
+                                <span class="text-sm text-gray-600 w-8">{{ $count }}</span>
+                            </div>
+                        @endfor
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews List -->
+            <div class="space-y-6">
+                @forelse ($tripReviews as $review)
+                    <div class="border-b border-gray-200 pb-6 last:border-b-0">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-sky-100 rounded-full flex items-center justify-center">
+                                <span class="text-sky-600 font-semibold">
+                                    {{ substr($review->user_name ?? 'G', 0, 1) }}
+                                </span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <h4 class="font-semibold text-gray-800">{{ $review->user_name ?? 'Guest' }}</h4>
+                                    <div class="flex items-center gap-1">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <svg class="w-4 h-4"
+                                                fill="{{ $i <= $review->rating ? '#facc15' : 'none' }}"
+                                                stroke="#facc15" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                            </svg>
+                                        @endfor
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 mb-2">{{ $review->comment }}</p>
+                                <p class="text-sm text-gray-500">{{ $review->created_at->diffForHumans() }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center py-8">
+                        <div class="text-gray-400 text-6xl mb-4">💭</div>
+                        <p class="text-gray-600">Belum ada review untuk trip ini</p>
+                        <p class="text-gray-500 text-sm">Jadilah yang pertama memberikan review!</p>
+                    </div>
+                @endforelse
+            </div>
+
+            <!-- Load More Reviews -->
+            @if ($tripReviews->count() > 5)
+                <div class="text-center mt-6">
+                    <button class="text-sky-500 hover:text-sky-600 font-medium underline">
+                        Lihat Semua Reviews
+                    </button>
+                </div>
+            @endif
+        </div>
+    </div>
+
 </div>
 
 

@@ -6,12 +6,12 @@
 
         <h3 class="text-xl font-bold mb-4 text-sky-600">Konfirmasi Pemesanan</h3>
 
-        <form action="{{ route('tripStore', $openTrip->id) }}" method="POST" class="space-y-4">
+        <form action="{{ route('storeRental', $rentalItem->id) }}" method="POST" class="space-y-4">
             @csrf
 
             <div class="flex justify-between items-center">
-                <span class="text-gray-700 font-medium">Jumlah Partisipan</span>
-                <span id="modalParticipants" class="font-bold text-gray-800">1</span>
+                <span class="text-gray-700 font-medium">Jumlah Barang</span>
+                <span id="modalQuantity" class="font-bold text-gray-800">1</span>
             </div>
 
             <div class="flex justify-between items-center">
@@ -21,6 +21,15 @@
 
             <hr class="my-3">
 
+            <!-- Lokasi Pengantaran -->
+            <div>
+                <label class="block text-gray-700 font-medium mb-1">Lokasi Pengantaran</label>
+                <input type="text" name="delivery_location" required
+                    class="w-full border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500"
+                    placeholder="Contoh: Jl. Mawar No. 123, Kota X">
+            </div>
+
+            <!-- Metode Pembayaran -->
             <div>
                 <label class="block text-gray-700 font-medium mb-1">Metode Pembayaran</label>
                 <select name="payment_methods" required
@@ -32,6 +41,7 @@
                 </select>
             </div>
 
+            <!-- Catatan -->
             <div>
                 <label class="block text-gray-700 font-medium mb-1">Catatan</label>
                 <textarea name="special_request" rows="3"
@@ -39,7 +49,7 @@
                     placeholder="Tambahkan catatan (opsional)"></textarea>
             </div>
 
-            <input type="hidden" id="modalParticipantsInput" name="participants">
+            <input type="hidden" id="modalQuantityInput" name="quantity">
 
             <button type="submit"
                 class="w-full bg-sky-500 text-white py-3 rounded-lg font-semibold hover:bg-sky-600 transition-colors">
@@ -49,30 +59,25 @@
     </div>
 </div>
 
-
-
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const openModalButton = document.getElementById('openModalButton');
         const bookingModal = document.getElementById('bookingModal');
-        const participantsInput = document.getElementById('participants');
+        const quantityInput = document.getElementById('quantity');
         const totalPriceDisplay = document.getElementById('totalPriceDisplay');
 
-        const modalParticipants = document.getElementById('modalParticipants');
+        const modalQuantity = document.getElementById('modalQuantity');
         const modalTotalPrice = document.getElementById('modalTotalPrice');
-        const modalParticipantsInput = document.getElementById('modalParticipantsInput');
+        const modalQuantityInput = document.getElementById('modalQuantityInput');
 
         openModalButton.addEventListener('click', () => {
-            // Ambil nilai dari form luar
-            const participants = participantsInput.value;
+            const quantity = quantityInput.value;
             const totalPrice = totalPriceDisplay.textContent;
 
-            // Tampilkan ke modal
-            modalParticipants.textContent = participants;
+            modalQuantity.textContent = quantity;
             modalTotalPrice.textContent = totalPrice;
-            modalParticipantsInput.value = participants;
+            modalQuantityInput.value = quantity;
 
-            // Tampilkan modal
             bookingModal.classList.remove('hidden');
             bookingModal.classList.add('flex');
         });
@@ -84,3 +89,4 @@
         bookingModal.classList.remove('flex');
     }
 </script>
+

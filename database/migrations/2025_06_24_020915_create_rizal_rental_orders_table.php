@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('rental_items_id')->constrained('rizal_rental_items');
             $table->date('start_date');
             $table->date('end_date');
+            $table->integer('quantity');
             $table->decimal('total_price',15,2);
             $table->enum('retrun_status',['belum kembali','kembali','terlambat', 'hilang'])->default('belum kembali');
             $table->text('pickup_location');

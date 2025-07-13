@@ -2,9 +2,11 @@
 @section('content')
     {{-- Categories --}}
     <div class="max-w-6xl mx-auto p-4 mt-8">
-        <div class="text-left mb-8">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">Trip Categories</h1>
-            <div class="w-70 h-1 bg-blue-500  rounded-full"></div>
+        <div class="inline-block">
+            <div class="text-left mb-8">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">Trip Categories</h1>
+                <div class="h-1 bg-blue-500 rounded-full w-full"></div>
+            </div>
         </div>
         <div class="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8">
             @forelse ($categories as $category)
@@ -26,8 +28,10 @@
     {{-- Open Trips --}}
     <div class="max-w-6xl mx-auto p-4 mt-20">
         <div class="text-left mb-8">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">Trip Populer</h1>
-            <div class="w-57 h-1 bg-blue-500  rounded-full"></div>
+            <div class="inline-block">
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">Trip Populer</h1>
+                <div class="h-1 bg-blue-500 rounded-full w-full"></div>
+            </div>
         </div>
 
         <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">

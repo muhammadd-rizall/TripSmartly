@@ -83,6 +83,7 @@ Route::get('/trip-reviews', [ReviewController::class, 'tripReviews'])->name('tri
 Route::prefix('landing-page')->group(function(){
     Route::get('/',[LandingPageController::class, 'home'])->name('landingPageHome');
     Route::get('/trip-views',[LandingPageController::class, 'tripViews'])->name('tripViews');
+    Route::get('/rental-views',[LandingPageController::class, 'rentalViews'])->name('rentalViews');
     // Route::get('/triphome',[LandingPageController::class, 'tripHome'])->name('tripHome');
 });
 

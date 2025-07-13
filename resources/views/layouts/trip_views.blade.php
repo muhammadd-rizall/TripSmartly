@@ -24,21 +24,13 @@
             <select name="category"
                 class="w-full md:w-48 h-12 border-2 border-sky-500 focus:outline-none focus:border-sky-600 text-sky-600 rounded-lg px-3">
                 <option value="all" {{ request('category') == 'all' ? 'selected' : '' }}>Semua Kategori</option>
-                <option value="pantai" {{ request('category') == 'pantai' ? 'selected' : '' }}>Pantai</option>
-                <option value="gunung" {{ request('category') == 'gunung' ? 'selected' : '' }}>Gunung</option>
-                <option value="wisata_kota" {{ request('category') == 'wisata_kota' ? 'selected' : '' }}>Wisata Kota
-                </option>
-                <option value="wisata_alam" {{ request('category') == 'wisata_alam' ? 'selected' : '' }}>Wisata Alam
-                </option>
-                <option value="sejarah_dan_budaya" {{ request('category') == 'sejarah_dan_budaya' ? 'selected' : '' }}>
-                    Sejarah & Budaya</option>
-                <option value="agrowisata" {{ request('category') == 'agrowisata' ? 'selected' : '' }}>Agrowisata
-                </option>
-                <option value="camping_glamping" {{ request('category') == 'camping_glamping' ? 'selected' : '' }}>
-                    Clamping / Glamping</option>
-                <option value="festival_dan_event" {{ request('category') == 'festival_dan_event' ? 'selected' : '' }}>
-                    Festival & Event</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
             </select>
+
         </form>
 
 
@@ -59,9 +51,12 @@
         @if ($trips->isNotEmpty())
             <div class="max-w-6xl mx-auto p-4 mt-20">
                 <div class="text-left mb-8">
-                    <h1 class="text-4xl font-bold text-gray-800 mb-2">{{ $categoryName }}</h1>
-                    <div class="w-32 h-1 bg-blue-500 rounded-full"></div>
+                    <div class="inline-block">
+                        <h1 class="text-4xl font-bold text-gray-800 mb-2">{{ $categoryName }}</h1>
+                        <div class="h-1 bg-blue-500 rounded-full w-full"></div>
+                    </div>
                 </div>
+
 
                 <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     @foreach ($trips as $openTrip)

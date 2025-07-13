@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('rizal_rental_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug');
             $table->string('description');
             $table->timestamps();
         });

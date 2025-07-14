@@ -12,6 +12,7 @@
                         <th class="px-4 py-3 text-left font-bold">Nama Barang</th>
                         <th class="px-4 py-3 text-left font-bold">Tanggal Mulai</th>
                         <th class="px-4 py-3 text-left font-bold">Tanggal Akhir</th>
+                        <th class="px-4 py-3 text-left font-bold">Jumlah Item</th>
                         <th class="px-6 py-3 text-left font-bold">Total Harga</th>
                         <th class="px-4 py-3 text-left font-bold">Lokasi Penjemputan</th>
                         <th class="px-4 py-3 text-left font-bold">Lokasi Pengantaran</th>
@@ -40,6 +41,9 @@
                             </td>
                             <td class="px-4 py-4 text-gray-900">
                                 {{ $rentalOrder->end_date }}
+                            </td>
+                            <td class="px-4 py-4 text-gray-900">
+                                {{ $rentalOrder->quantity }}
                             </td>
                             <td class="px-6 py-2 text-center font-semibold text-green-600">
                                 Rp {{ number_format($rentalOrder->total_price, 0, ',', '.') }}

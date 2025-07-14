@@ -43,12 +43,12 @@
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
                         <a href="#"
-                            class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-lg hover:bg-gray-100 transition duration-300 transform hover:scale-105">
-                            BOOK A ROOM
+                            class="inline-block px-16 py-4 bg-white text-black font-semibold rounded-lg hover:bg-gray-100 transition duration-300 transform hover:scale-105">
+                            OPEN TRIP
                         </a>
                         <a href="#"
-                            class="inline-block px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-black transition duration-300">
-                            EXPLORE MORE
+                            class="inline-block px-10 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-black transition duration-300">
+                            RENTAL BARANG
                         </a>
                     </div>
                 </div>

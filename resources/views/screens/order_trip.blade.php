@@ -28,7 +28,6 @@
                     <option value="" disabled selected>Pilih Metode</option>
                     <option value="transfer">Transfer Bank</option>
                     <option value="qris">QRIS</option>
-                    <option value="cod">Bayar di Tempat</option>
                 </select>
             </div>
 

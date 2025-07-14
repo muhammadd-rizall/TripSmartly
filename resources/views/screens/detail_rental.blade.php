@@ -67,9 +67,11 @@
                     </div>
                     <p class="text-sm text-gray-500">per hari</p>
 
-                    <div class="mt-5 flex items-center justify-center gap-2">
-                        <p class="text-sm text-gray-500">Stok Tersedia</p>
-                        <p class="font-semibold text-sky-600">{{ $availableStock }} item</p>
+                    <div class="bg-sky-50 p-4 rounded-lg mt-5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-700">Stok Tersedia</span>
+                            <span class="font-semibold text-sky-600">{{ $availableStock }} item</span>
+                        </div>
                     </div>
                 </div>
 
@@ -171,7 +173,8 @@
                     <div class="border-b border-gray-200 pb-6 last:border-b-0">
                         <div class="flex items-start gap-4">
                             <div class="w-12 h-12 bg-sky-100 rounded-full flex items-center justify-center">
-                                <span class="text-sky-600 font-semibold">{{ substr($review->user->name, 0, 1) }}</span>
+                                <span
+                                    class="text-sky-600 font-semibold">{{ substr($review->user->name, 0, 1) }}</span>
                             </div>
                             <div class="flex-1">
                                 <div class="flex items-center gap-2 mb-2">

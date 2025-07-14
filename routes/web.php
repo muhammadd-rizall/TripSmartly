@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DetailTripController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RentalItemController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TripController;
+use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -13,94 +15,98 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-//route rental barang
-Route::get('/rental_item', [RentalItemController::class, 'itemRental'])->name('itemRental');
-Route::get('create-item-rental', [RentalItemController::class, 'create'])->name('createItemRental');
-Route::post('/input-rental-item', [RentalItemController::class, 'store']);
-Route::get('/edit-rental/{id}', [RentalItemController::class, 'edit']);
-Route::post('/update-rental/{id}', [RentalItemController::class, 'update']);
-Route::delete('/delete-rental/{id}', [RentalItemController::class, 'destroy']);
+Route::middleware(['auth', IsAdmin::class])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('admins.dashboard');
+    });
+    //route rental barang
+    Route::get('/rental_item', [RentalItemController::class, 'itemRental'])->name('itemRental');
+    Route::get('create-item-rental', [RentalItemController::class, 'create'])->name('createItemRental');
+    Route::post('/input-rental-item', [RentalItemController::class, 'store']);
+    Route::get('/edit-rental/{id}', [RentalItemController::class, 'edit']);
+    Route::post('/update-rental/{id}', [RentalItemController::class, 'update']);
+    Route::delete('/delete-rental/{id}', [RentalItemController::class, 'destroy']);
 
 
-//route order
-Route::get('/trip-order',[OrderController::class,'tripOrder'])->name('tripOrder');
-Route::patch('/update-status/{id}',[OrderController::class,'updateStatus']);
-Route::delete('/delete-trip-order/{id}', [OrderController::class, 'destroy']);
+    //route order
+    Route::get('/trip-order', [OrderController::class, 'tripOrder'])->name('tripOrder');
+    Route::patch('/update-status/{id}', [OrderController::class, 'updateStatus']);
+    Route::delete('/delete-trip-order/{id}', [OrderController::class, 'destroy']);
 
-Route::get('/rental-order',[OrderController::class,'rentalOrder'])->name('rentalOrder');
-Route::patch('/update-return-status/{id}',[OrderController::class,'updateReturnStatus']);
-Route::patch('/update-order-status/{id}',[OrderController::class,'updateOrderStatus']);
-Route::delete('/delete-rental-order/{id}', [OrderController::class, 'destroyRentalOrder']);
-
-
-//route trip
-Route::get('/trip',[TripController::class, 'indexTrip'])->name('openTrip');
-Route::get('create-trip',[TripController::class,'create']);
-Route::post('/input-trip',[TripController::class, 'store']);
-Route::get('/edit-trip/{id}',[TripController::class, 'edit']);
-Route::post('/update-trip/{id}',[TripController::class, 'update']);
-Route::delete('/delete-trip/{id}',[TripController::class, 'destroy']);
+    Route::get('/rental-order', [OrderController::class, 'rentalOrder'])->name('rentalOrder');
+    Route::patch('/update-return-status/{id}', [OrderController::class, 'updateReturnStatus']);
+    Route::patch('/update-order-status/{id}', [OrderController::class, 'updateOrderStatus']);
+    Route::delete('/delete-rental-order/{id}', [OrderController::class, 'destroyRentalOrder']);
 
 
-//route trip Schedule
-Route::get('/trip-schedule', [TripController::class, 'indexSchedule'])->name('tripSchedule');
-Route::get('create-trip-schedule', [TripController::class, 'createSchedule']);
-Route::post('/input-trip-schedule', [TripController::class, 'storeSchedule']);
-Route::get('/edit-trip-schedule/{id}', [TripController::class, 'editSchedule']);
-Route::post('/update-trip-schedule/{id}', [TripController::class, 'updateSchedule']);
-Route::delete('/delete-trip-schedule/{id}', [TripController::class, 'destroySchedule']);
+    //route trip
+    Route::get('/trip', [TripController::class, 'indexTrip'])->name('openTrip');
+    Route::get('create-trip', [TripController::class, 'create']);
+    Route::post('/input-trip', [TripController::class, 'store']);
+    Route::get('/edit-trip/{id}', [TripController::class, 'edit']);
+    Route::post('/update-trip/{id}', [TripController::class, 'update']);
+    Route::delete('/delete-trip/{id}', [TripController::class, 'destroy']);
 
 
-//route trip Destiantion
-Route::get('/trip-destination', [TripController::class, 'indexTd'])->name('tripDestination');
-Route::get('createTD', [TripController::class, 'createTD']);
-Route::post('/inputTD', [TripController::class, 'storeTD']);
-Route::get('/editTD/{id}', [TripController::class, 'editTD']);
-Route::post('/updateTD/{id}', [TripController::class, 'updateTD']);
-Route::delete('/deleteTD/{id}', [TripController::class, 'destroyTD']);
+    //route trip Schedule
+    Route::get('/trip-schedule', [TripController::class, 'indexSchedule'])->name('tripSchedule');
+    Route::get('create-trip-schedule', [TripController::class, 'createSchedule']);
+    Route::post('/input-trip-schedule', [TripController::class, 'storeSchedule']);
+    Route::get('/edit-trip-schedule/{id}', [TripController::class, 'editSchedule']);
+    Route::post('/update-trip-schedule/{id}', [TripController::class, 'updateSchedule']);
+    Route::delete('/delete-trip-schedule/{id}', [TripController::class, 'destroySchedule']);
 
 
-//route trip internaries
-
-Route::get('/itinerary', [TripController::class, 'indexIT'])->name('tripItineraries');
-Route::get('create-itinerary', [TripController::class, 'createIT']);
-Route::post('/input-itinerary', [TripController::class, 'storeIT']);
-Route::get('/edit-itinerary/{id}', [TripController::class, 'editIT']);
-Route::post('/update-itinerary/{id}', [TripController::class, 'updateIT']);
-Route::delete('/delete-itinerary/{id}', [TripController::class, 'destroyIT']);
-
-
-Route::get('dashboard', function () {
-    return view('admins.dashboard');
-})->name('dashboard');
+    //route trip Destiantion
+    Route::get('/trip-destination', [TripController::class, 'indexTd'])->name('tripDestination');
+    Route::get('createTD', [TripController::class, 'createTD']);
+    Route::post('/inputTD', [TripController::class, 'storeTD']);
+    Route::get('/editTD/{id}', [TripController::class, 'editTD']);
+    Route::post('/updateTD/{id}', [TripController::class, 'updateTD']);
+    Route::delete('/deleteTD/{id}', [TripController::class, 'destroyTD']);
 
 
-//reviews
-Route::get('/rental-reviews', [ReviewController::class, 'rentalReviews'])->name('rentalReviews');
-Route::get('/trip-reviews', [ReviewController::class, 'tripReviews'])->name('tripReviews');
+    //route trip internaries
+
+    Route::get('/itinerary', [TripController::class, 'indexIT'])->name('tripItineraries');
+    Route::get('create-itinerary', [TripController::class, 'createIT']);
+    Route::post('/input-itinerary', [TripController::class, 'storeIT']);
+    Route::get('/edit-itinerary/{id}', [TripController::class, 'editIT']);
+    Route::post('/update-itinerary/{id}', [TripController::class, 'updateIT']);
+    Route::delete('/delete-itinerary/{id}', [TripController::class, 'destroyIT']);
+
+    //reviews
+    Route::get('/rental-reviews', [ReviewController::class, 'rentalReviews'])->name('rentalReviews');
+    Route::get('/trip-reviews', [ReviewController::class, 'tripReviews'])->name('tripReviews');
+
+});
+
+
+
+
 
 
 //landing page
-Route::prefix('landing-page')->group(function(){
-    Route::get('/',[LandingPageController::class, 'home'])->name('landingPageHome');
-    Route::get('/trip-views',[LandingPageController::class, 'tripViews'])->name('tripViews');
-    Route::get('/trip-views/{id}',[DetailTripController::class, 'tripDetails'])->name('tripDetails');
-    Route::get('/trip-views/{id}/order',[DetailTripController::class, 'bookTrip'])->name('tripOrders');
-    Route::post('/trip-views/{id}/order',[DetailTripController::class, 'storeBooking'])->name('tripStore');
+Route::prefix('landing-page')->group(function () {
+    Route::get('/', [LandingPageController::class, 'home'])->name('landingPageHome');
+    Route::get('/trip-views', [LandingPageController::class, 'tripViews'])->name('tripViews');
+    Route::get('/trip-views/{id}', [DetailTripController::class, 'tripDetails'])->name('tripDetails');
+    Route::get('/trip-views/{id}/order', [DetailTripController::class, 'bookTrip'])->name('tripOrders');
+    Route::post('/trip-views/{id}/order', [DetailTripController::class, 'storeBooking'])->name('tripStore');
 
 
-    Route::get('/rental-views',[LandingPageController::class, 'rentalViews'])->name('rentalViews');
-    Route::get('/rental-views/{id}',[DetailTripController::class, 'rentalDetails'])->name('rentalDetails');
-    Route::get('/rental-views/{id}/order',[DetailTripController::class, 'orderRental'])->name('orderRental');
-    Route::post('/rental-views/{id}/order',[DetailTripController::class, 'storeRental'])->name('storeRental');
+    Route::get('/rental-views', [LandingPageController::class, 'rentalViews'])->name('rentalViews');
+    Route::get('/rental-views/{id}', [DetailTripController::class, 'rentalDetails'])->name('rentalDetails');
+    Route::get('/rental-views/{id}/order', [DetailTripController::class, 'orderRental'])->name('orderRental');
+    Route::post('/rental-views/{id}/order', [DetailTripController::class, 'storeRental'])->name('storeRental');
     // Route::get('/triphome',[LandingPageController::class, 'tripHome'])->name('tripHome');
 });
 
-// Route::prefix('trip')->group(function () {
-//     Route::get('/', [DetailTripController::class, 'index'])->name('trip.index');
-//     Route::get('/{id}', [DetailTripController::class, 'show'])->name('trip.show');
-//     Route::get('/{id}/order', [DetailTripController::class, 'create'])->name('trip.order.create');
-//     Route::post('/{id}/order', [DetailTripController::class, 'store'])->name('trip.order.store');
-//     Route::get('/{id}/review', [DetailTripController::class, 'create'])->name('trip.review.create');
-//     Route::post('/{id}/review', [DetailTripController::class, 'store'])->name('trip.review.store');
-// });
+//login
+
+Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+
+//register
+Route::get('/register',[AuthController::class,'registerForm'])->name('register');
+Route::post('/register',[AuthController::class,'register']);

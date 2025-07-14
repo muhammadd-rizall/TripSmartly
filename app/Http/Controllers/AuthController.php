@@ -30,7 +30,7 @@ class AuthController extends Controller
 
             // Cek role
             if (Auth::user()->role === 'admin') {
-                return redirect('/dashboard')->with('success', 'Welcome Admin ' . Auth::user()->name . '!');
+                return redirect('/admin/dashboard')->with('success', 'Welcome Admin ' . Auth::user()->name . '!');
             }
 
             return redirect('/landing-page')->with('success', 'Welcome ' . Auth::user()->name . '!');

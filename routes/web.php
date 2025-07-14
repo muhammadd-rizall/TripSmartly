@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DahsboardController;
 use App\Http\Controllers\DetailTripController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\OrderController;
@@ -15,10 +16,15 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::middleware(['auth', IsAdmin::class])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admins.dashboard');
-    });
+
+
+
+Route::prefix('admin')->middleware(['auth', IsAdmin::class])->group(function () {
+
+    Route::get('/dashboard',[DahsboardController::class,'dashboardView']);
+
+    Route::get('/dashboard-home', [DahsboardController::class, 'index'])->name('dashboarHome');
+
     //route rental barang
     Route::get('/rental_item', [RentalItemController::class, 'itemRental'])->name('itemRental');
     Route::get('create-item-rental', [RentalItemController::class, 'create'])->name('createItemRental');
@@ -79,7 +85,25 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     Route::get('/rental-reviews', [ReviewController::class, 'rentalReviews'])->name('rentalReviews');
     Route::get('/trip-reviews', [ReviewController::class, 'tripReviews'])->name('tripReviews');
 
+
 });
+
+
+
+
+// Route::middleware(['auth', IsAdmin::class])->group(function () {
+//     Route::get('/dashboard', function () {
+//         return view('admins.dashboard');
+//     });
+
+//     Route::get('/dashboard_home', function () {
+//         return view('admins.dashboard_home'); //
+//     });
+
+
+
+
+// });
 
 
 
@@ -108,5 +132,5 @@ Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 //register
-Route::get('/register',[AuthController::class,'registerForm'])->name('register');
-Route::post('/register',[AuthController::class,'register']);
+Route::get('/register', [AuthController::class, 'registerForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);

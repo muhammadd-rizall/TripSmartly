@@ -66,7 +66,6 @@
                         Rp {{ number_format($rentalItem->price_per_day, 0, ',', '.') }}
                     </div>
                     <p class="text-sm text-gray-500">per hari</p>
-
                     <div class="bg-sky-50 p-4 rounded-lg mt-5">
                         <div class="flex items-center justify-between">
                             <span class="text-gray-700">Stok Tersedia</span>
@@ -75,22 +74,20 @@
                     </div>
                 </div>
 
-                <form action="{{ route('storeRental', $rentalItem->id) }}" method="POST" class="space-y-4">
+                <form class="space-y-4" id="mainRentalForm">
                     @csrf
+                    <input type="hidden" id="quantity" value="1">
+                    <input type="hidden" id="pricePerDay" value="{{ $rentalItem->price_per_day }}">
 
                     <div class="flex items-center justify-between gap-6">
                         <label class="text-gray-700 font-medium whitespace-nowrap">Jumlah Barang</label>
                         <div class="flex items-center space-x-5">
                             <button type="button" id="decrease"
-                                class="bg-sky-100 hover:bg-sky-200 text-sky-600 w-10 h-10 rounded-full text-lg font-semibold transition-colors">−</button>
-
+                                class="bg-sky-100 hover:bg-sky-200 text-sky-600 w-10 h-10 rounded-full text-lg font-semibold">−</button>
                             <span id="quantityDisplay"
                                 class="min-w-[3rem] text-center text-gray-800 font-bold text-xl">1</span>
-
-                            <input type="hidden" name="quantity" id="quantity" value="1">
-
                             <button type="button" id="increase"
-                                class="bg-sky-100 hover:bg-sky-200 text-sky-600 w-10 h-10 rounded-full text-lg font-semibold transition-colors">+</button>
+                                class="bg-sky-100 hover:bg-sky-200 text-sky-600 w-10 h-10 rounded-full text-lg font-semibold">+</button>
                         </div>
                     </div>
 
@@ -103,24 +100,39 @@
                         </div>
                     </div>
 
-                    <button id="openModalButton" type="button"
-                        class="w-full bg-gradient-to-r from-sky-500 to-blue-500 text-white py-3 rounded-lg font-semibold hover:from-sky-600 hover:to-blue-600 transition-all duration-200 transform hover:scale-105">
-                        Pesan Sekarang
-                    </button>
+                    <div class="space-y-4 mt-4">
+                        <div>
+                            <label for="startDateInput" class="text-gray-700 font-medium mb-1 block">Tanggal Mulai
+                                Sewa</label>
+                            <input type="date" id="startDateInput" required class="w-full border-gray-300 rounded-lg"
+                                min="{{ date('Y-m-d') }}">
+                        </div>
+                        <div>
+                            <label for="endDateInput" class="text-gray-700 font-medium mb-1 block">Tanggal Selesai
+                                Sewa</label>
+                            <input type="date" id="endDateInput" required class="w-full border-gray-300 rounded-lg"
+                                min="{{ date('Y-m-d') }}">
+                        </div>
+                    </div>
 
+                    @auth
+                        <button id="openModalButton" type="button"
+                            class="w-full bg-gradient-to-r from-sky-500 to-blue-500 text-white py-3 rounded-lg font-semibold hover:from-sky-600 hover:to-blue-600">
+                            Pesan Sekarang
+                        </button>
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="block text-center bg-sky-500 text-white py-3 rounded-lg hover:bg-sky-600">
+                            Login untuk Pesan
+                        </a>
+                    @endauth
                 </form>
-
-                <div class="text-center mt-6 pt-4 border-t border-gray-200">
-                    <p class="text-sm text-gray-600 mb-2">Ada pertanyaan?</p>
-                    <button class="text-sky-500 hover:text-sky-600 font-medium underline">
-                        Hubungi Kami
-                    </button>
-                </div>
             </div>
         </div>
     </div>
 
-    <!-- Reviews Section -->
+
+    {{-- Reviews Section --}}
     <div class="mt-12">
         <div class="bg-sky-100 rounded-xl shadow-lg p-6">
             <div class="flex items-center justify-between mb-6">
@@ -133,7 +145,9 @@
             <!-- Rating Summary -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-sky-600 mb-2">{{ number_format($averageRating, 1) }}</div>
+                    <div class="text-4xl font-bold text-sky-600 mb-2">
+                        {{ number_format($averageRating, 1) }}
+                    </div>
                     <div class="flex items-center justify-center gap-1 mb-2">
                         @for ($i = 1; $i <= 5; $i++)
                             <svg class="w-5 h-5" fill="{{ $i <= round($averageRating) ? '#facc15' : 'none' }}"
@@ -173,12 +187,13 @@
                     <div class="border-b border-gray-200 pb-6 last:border-b-0">
                         <div class="flex items-start gap-4">
                             <div class="w-12 h-12 bg-sky-100 rounded-full flex items-center justify-center">
-                                <span
-                                    class="text-sky-600 font-semibold">{{ substr($review->user->name, 0, 1) }}</span>
+                                <span class="text-sky-600 font-semibold">
+                                    {{ substr($review->user->name ?? 'G', 0, 1) }}
+                                </span>
                             </div>
                             <div class="flex-1">
                                 <div class="flex items-center gap-2 mb-2">
-                                    <h4 class="font-semibold text-gray-800">{{ $review->user->name }}</h4>
+                                    <h4 class="font-semibold text-gray-800">{{ $review->user->name ?? 'Guest' }}</h4>
                                     <div class="flex items-center gap-1">
                                         @for ($i = 1; $i <= 5; $i++)
                                             <svg class="w-4 h-4"
@@ -191,7 +206,7 @@
                                     </div>
                                 </div>
                                 <p class="text-gray-600 mb-2">{{ $review->comment }}</p>
-                                <p class="text-sm text-gray-500">{{ $review->created_at->format('d M Y') }}</p>
+                                <p class="text-sm text-gray-500">{{ $review->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
                     </div>
@@ -214,65 +229,147 @@
             @endif
         </div>
     </div>
+
+
 </div>
 
+
+
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const input = document.getElementById('quantity');
-        const increaseBtn = document.getElementById('increase');
-        const decreaseBtn = document.getElementById('decrease');
-        const quantityDisplay = document.getElementById('quantityDisplay');
-        const totalPriceDisplay = document.getElementById('totalPriceDisplay');
-        const pricePerDay = {{ $rentalItem->price_per_day }};
-        const maxQuota = {{ $availableStock }};
+document.addEventListener('DOMContentLoaded', function() {
+    const quantityInput = document.getElementById('quantity');
+    const increaseBtn = document.getElementById('increase');
+    const decreaseBtn = document.getElementById('decrease');
+    const quantityDisplay = document.getElementById('quantityDisplay');
+    const totalPriceDisplay = document.getElementById('totalPriceDisplay');
+    const pricePerDay = parseInt(document.getElementById('pricePerDay').value, 10);
+    const maxQuota = {{ $availableStock }};
 
-        function updateTotal() {
-            const value = parseInt(input.value);
-            const total = value * pricePerDay;
-            quantityDisplay.textContent = value;
-            totalPriceDisplay.textContent = 'Rp ' + total.toLocaleString('id-ID');
-        }
+    // Set minimum date untuk input tanggal
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('startDateInput').min = today;
+    document.getElementById('endDateInput').min = today;
 
-        function updateButtonStates() {
-            const value = parseInt(input.value);
-            decreaseBtn.disabled = value <= 1;
-            increaseBtn.disabled = value >= maxQuota;
-
-            if (decreaseBtn.disabled) {
-                decreaseBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            } else {
-                decreaseBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-
-            if (increaseBtn.disabled) {
-                increaseBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            } else {
-                increaseBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-        }
-
-        increaseBtn.addEventListener('click', function() {
-            let value = parseInt(input.value);
-            if (value < maxQuota) {
-                input.value = value + 1;
-                updateTotal();
-                updateButtonStates();
-            }
-        });
-
-        decreaseBtn.addEventListener('click', function() {
-            let value = parseInt(input.value);
-            if (value > 1) {
-                input.value = value - 1;
-                updateTotal();
-                updateButtonStates();
-            }
-        });
-
-        updateTotal();
-        updateButtonStates();
+    // Update tanggal end ketika start date berubah
+    document.getElementById('startDateInput').addEventListener('change', function() {
+        const startDate = this.value;
+        document.getElementById('endDateInput').min = startDate;
     });
+
+    function updateTotal() {
+        const value = parseInt(quantityInput.value);
+        const total = value * pricePerDay;
+        quantityDisplay.textContent = value;
+        totalPriceDisplay.textContent = 'Rp ' + total.toLocaleString('id-ID');
+    }
+
+    function updateButtonStates() {
+        const value = parseInt(quantityInput.value);
+        decreaseBtn.disabled = value <= 1;
+        increaseBtn.disabled = value >= maxQuota;
+        decreaseBtn.classList.toggle('opacity-50', value <= 1);
+        increaseBtn.classList.toggle('opacity-50', value >= maxQuota);
+    }
+
+    increaseBtn.addEventListener('click', () => {
+        let value = parseInt(quantityInput.value);
+        if (value < maxQuota) {
+            quantityInput.value = value + 1;
+            updateTotal();
+            updateButtonStates();
+        }
+    });
+
+    decreaseBtn.addEventListener('click', () => {
+        let value = parseInt(quantityInput.value);
+        if (value > 1) {
+            quantityInput.value = value - 1;
+            updateTotal();
+            updateButtonStates();
+        }
+    });
+
+    updateTotal();
+    updateButtonStates();
+
+    // Modal handling
+    const openModalButton = document.getElementById('openModalButton');
+    const bookingModal = document.getElementById('bookingModal');
+    const startDateInput = document.getElementById('startDateInput');
+    const endDateInput = document.getElementById('endDateInput');
+    const modalQuantity = document.getElementById('modalQuantity');
+    const modalDays = document.getElementById('modalDays');
+    const modalTotalPrice = document.getElementById('modalTotalPrice');
+    const modalQuantityInput = document.getElementById('modalQuantityInput');
+    const modalStartDateInput = document.getElementById('modalStartDateInput');
+    const modalEndDateInput = document.getElementById('modalEndDateInput');
+
+    openModalButton.addEventListener('click', () => {
+        const quantity = parseInt(quantityInput.value, 10);
+        const startDateValue = startDateInput.value;
+        const endDateValue = endDateInput.value;
+
+        // Validasi input
+        if (!startDateValue || !endDateValue) {
+            alert('Silakan pilih tanggal mulai dan tanggal selesai sewa terlebih dahulu.');
+            return;
+        }
+
+        const startDate = new Date(startDateValue);
+        const endDate = new Date(endDateValue);
+
+        if (endDate <= startDate) {
+            alert('Tanggal selesai harus setelah tanggal mulai.');
+            return;
+        }
+
+        let days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+        if (isNaN(days) || days < 1) days = 1;
+
+        const totalPrice = pricePerDay * quantity * days;
+
+        // Update modal content
+        modalQuantity.textContent = quantity;
+        modalDays.textContent = `${days} Hari`;
+        modalTotalPrice.textContent = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+
+        // Set hidden inputs
+        modalQuantityInput.value = quantity;
+        modalStartDateInput.value = startDateValue;
+        modalEndDateInput.value = endDateValue;
+
+        // Show modal
+        bookingModal.classList.remove('hidden');
+        bookingModal.classList.add('flex');
+    });
+
+    // Form validation
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+        const deliveryLocation = document.getElementById('delivery_location').value.trim();
+        const paymentMethod = document.getElementById('payment_methods').value;
+
+        if (!deliveryLocation) {
+            e.preventDefault();
+            alert('Alamat pengiriman harus diisi');
+            return;
+        }
+
+        if (!paymentMethod) {
+            e.preventDefault();
+            alert('Metode pembayaran harus dipilih');
+            return;
+        }
+    });
+});
+
+function closeBookingModal() {
+    const bookingModal = document.getElementById('bookingModal');
+    bookingModal.classList.add('hidden');
+    bookingModal.classList.remove('flex');
+}
 </script>
+
 
 @include('screens.order_rental')
 

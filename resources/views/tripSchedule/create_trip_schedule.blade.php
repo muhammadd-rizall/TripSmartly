@@ -4,7 +4,7 @@
         <div class="bg-white rounded-3xl shadow-2xl p-8">
             <h3 class="text-3xl font-bold mb-8 text-gray-800 text-center">Input Data Trip Schedule</h3>
 
-            <form action="/input-trip-schedule" method="post" enctype="multipart/form-data" class="space-y-6">
+            <form action="{{ route('inputSchedule') }}" method="post" enctype="multipart/form-data" class="space-y-6">
                 @csrf
 
                 {{-- Trip --}}
@@ -94,7 +94,7 @@
 
                 {{-- Tombol --}}
                 <div class="flex justify-between pt-4">
-                    <a href="/trip-schedule"
+                    <a href="{{ route('tripSchedule') }}"
                         class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">
                         Kembali
                     </a>

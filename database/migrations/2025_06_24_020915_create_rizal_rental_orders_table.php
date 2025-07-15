@@ -20,11 +20,10 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('total_price',15,2);
             $table->enum('retrun_status',['belum kembali','kembali','terlambat', 'hilang'])->default('belum kembali');
-            $table->text('pickup_location');
             $table->text('delivery_location');
             $table->string('payment_methods');
             $table->enum('payment_status',['pending', 'paid', 'failed'])->default('pending');
-            $table->text('notes');
+            $table->text('notes')->nullable();
             $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('pending');
             $table->timestamps();
         });

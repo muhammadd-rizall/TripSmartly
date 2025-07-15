@@ -35,6 +35,7 @@ class RentalItemFactory extends Factory
             'rental_categories_id'   => $this->faker->numberBetween(1, 5),
             'description'    => $this->faker->paragraph(),
             'stock'          => $this->faker->numberBetween(1, 50),
+            'pickup_location' => $this->faker->address(),
             'price_per_day'  => $this->faker->randomFloat(2, 50000, 500000),  // Rp
             'image'          => $fakeFileName
         ];

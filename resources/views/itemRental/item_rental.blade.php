@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <h1 class="text-2xl font-bold text-gray-800 mb-6">Data Item Rental</h1>
 
-        <a href="/create-item-rental"
+        <a href="{{ route('createItemRental') }}"
             class="inline-block mb-6 bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-md shadow transition duration-200">
             Tambah Item Rental
         </a>
@@ -17,6 +17,7 @@
                         <th class="px-4 py-3 text-center font-bold">Kategori</th>
                         <th class="px-4 py-3 text-center font-bold">Deskripsi</th>
                         <th class="px-4 py-3 text-center font-bold">Stok</th>
+                        <th class="px-4 py-3 text-left font-bold">Lokasi Penjemputan</th>
                         <th class="px-4 py-3 text-center font-bold">Harga Perhari</th>
                         <th class="px-4 py-3 text-center font-bold">Gambar</th>
                         <th class="px-4 py-3 text-center min-w-[200px] font-bold">Aksi</th>
@@ -32,6 +33,9 @@
                             <td class="px-4 py-4 text-gray-900 font-medium">{{ $item->description }}</td>
                             <td class="px-4 py-4 text-gray-900 font-medium">{{ $item->rizal_rental_categories->name }}</td>
                             <td class="px-4 py-4 text-gray-900 font-medium text-center">{{ $item->stock }}</td>
+                             <td class="px-4 py-4 text-gray-900 font-medium">
+                                {{ $item->pickup_location }}
+                            </td>
                             <td class="px-6 py-4 text-center font-semibold text-green-600">
                                 Rp {{ number_format($item->price_per_day, 0, ',', '.') }}
                             </td>
@@ -53,7 +57,7 @@
                                         </svg>
                                         Show
                                     </a>
-                                    <a href="/edit-rental/{{ $item->id }}"
+                                    <a href="{{route('editItem', $item->id) }}"
                                         class="inline-flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1.5 rounded-md text-xs font-medium transition duration-150 shadow-sm">
                                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -61,7 +65,7 @@
                                         </svg>
                                         Edit
                                     </a>
-                                    <form action="/delete-rental/{{ $item->id }}" method="POST" class="inline-block"
+                                    <form action="{{route('deleteItem', $item->id) }}" method="POST" class="inline-block"
                                         onsubmit="return confirm('Are you sure you want to delete this item?')">
                                         @csrf
                                         @method('DELETE')

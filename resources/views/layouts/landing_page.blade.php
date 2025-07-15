@@ -42,11 +42,11 @@
                         <span x-text="slides[currentSlide].description"></span>
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a href="#"
+                        <a href="{{ route('tripViews') }}"
                             class="inline-block px-16 py-4 bg-white text-black font-semibold rounded-lg hover:bg-gray-100 transition duration-300 transform hover:scale-105">
                             OPEN TRIP
                         </a>
-                        <a href="#"
+                        <a href="{{ route('rentalViews') }}"
                             class="inline-block px-10 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-black transition duration-300">
                             RENTAL BARANG
                         </a>
@@ -77,7 +77,7 @@
                 return {
                     currentSlide: 0,
                     slides: [{
-                            title: 'TRANQUIL',
+                            title: 'TRIP SMARTLY',
                             image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2149&q=80',
                             description: 'Located among stunning beaches, lush coconut groves, with breathtaking views of Blue Lagoon and idyllic landscapes of Bali.'
                         },

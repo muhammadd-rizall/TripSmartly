@@ -3,7 +3,7 @@
     <div class="max-w-4xl mx-auto px-4 py-6">
         <div class="bg-white rounded-3xl shadow-2xl p-8">
             <h3 class="text-3xl font-bold mb-8 text-gray-800 text-center">Edit Data Trip Destination</h3>
-            <form action="/updateTD/{{ $td->id }}" method="POST" enctype="multipart/form-data">
+            <form action="{{route('updateTd' ,$td->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
 
@@ -57,7 +57,7 @@
 
                 {{-- Buttons --}}
                 <div class="flex justify-between pt-4">
-                    <a href="/trip-destination"
+                    <a href="{{ route('tripDestination') }}"
                         class="inline-block px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">
                         Kembali
                     </a>

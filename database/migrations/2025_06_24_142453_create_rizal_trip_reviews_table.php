@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rizal_trip_reviews', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('trip_id')->constrained('rizal_trip');
-            $table->foreignId('user_id')->constrained('users');
-            $table->integer('rating');
-            $table->text('comment')->nullable();
-            $table->integer('like')->default(0);
-            $table->integer('dislike')->default(0); 
-            $table->timestamps();
-        });
+            Schema::create('rizal_trip_reviews', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('trip_id')->constrained('rizal_trip');
+                $table->foreignId('user_id')->constrained('users');
+                $table->integer('rating');
+                $table->text('comment')->nullable();
+                $table->integer('like')->default(0);
+                $table->integer('dislike')->default(0);
+                $table->timestamps();
+            });
     }
 
     /**

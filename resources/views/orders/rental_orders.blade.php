@@ -14,7 +14,6 @@
                         <th class="px-4 py-3 text-left font-bold">Tanggal Akhir</th>
                         <th class="px-4 py-3 text-left font-bold">Jumlah Item</th>
                         <th class="px-6 py-3 text-left font-bold">Total Harga</th>
-                        <th class="px-4 py-3 text-left font-bold">Lokasi Penjemputan</th>
                         <th class="px-4 py-3 text-left font-bold">Lokasi Pengantaran</th>
                         <th class="px-6 py-3 text-left font-bold">Metode Pembayaran</th>
                         <th class="px-6 py-3 text-left font-bold">Status Pembayaran</th>
@@ -51,9 +50,7 @@
 
 
 
-                            <td class="px-4 py-4 text-gray-700">
-                                {{ $rentalOrder->pickup_location }}
-                            </td>
+
                             <td class="px-4 py-4 text-gray-700">
                                 {{ $rentalOrder->delivery_location }}
                             </td>
@@ -93,7 +90,7 @@
                                 <div class="mt-4 flex justify-center gap-2 flex-wrap">
                                     @foreach (['belum kembali', 'kembali', 'terlambat', 'hilang'] as $status)
                                         @if ($rentalOrder->retrun_status !== $status)
-                                            <form action="/update-return-status/{{ $rentalOrder->id }}" method="POST"
+                                            <form action="{{route('updateReturn', $rentalOrder->id )}}" method="POST"
                                                 class="inline-block">
                                                 @csrf
                                                 @method('PATCH')
@@ -156,7 +153,7 @@
 
                                 <div class="mt-4 flex justify-center gap-2 flex-wrap">
                                     @if ($rentalOrder->status !== 'confirmed')
-                                        <form action="/update-order-status/{{ $rentalOrder->id }}" method="POST"
+                                        <form action="{{ route('updateOrderStatus' ,$rentalOrder->id )}}" method="POST"
                                             class="inline-block">
                                             @csrf
                                             @method('PATCH')
@@ -174,7 +171,7 @@
                                     @endif
 
                                     @if ($rentalOrder->status !== 'cancelled')
-                                        <form action="/update-order-status/{{ $rentalOrder->id }}" method="POST"
+                                        <form action="{{  route('updateOrderStatus' ,$rentalOrder->id ) }}" method="POST"
                                             class="inline-block"
                                             onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')">
                                             @csrf
@@ -193,7 +190,7 @@
                                     @endif
 
                                     @if ($rentalOrder->status !== 'pending')
-                                        <form action="/update-order-status/{{ $rentalOrder->id }}" method="POST"
+                                        <form action="{{route('updateOrderStatus' ,$rentalOrder->id ) }}" method="POST"
                                             class="inline-block">
                                             @csrf
                                             @method('PATCH')
@@ -229,7 +226,7 @@
                                         Show
                                     </a>
 
-                                    <form action="#" method="POST" class="inline-block"
+                                    <form action="{{ route('destroyRentalOrder',$rentalOrder->id) }}" method="POST" class="inline-block"
                                         onsubmit="return confirm('Are you sure you want to delete this rental order?')">
                                         @csrf
                                         @method('DELETE')

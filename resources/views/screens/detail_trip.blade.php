@@ -279,11 +279,18 @@
                         </span>
                     </div>
 
-                    <button id="openModalButton" type="button" data-modal-target="bookingModal"
-                        data-modal-toggle="bookingModal"
-                        class="w-full bg-sky-500 text-white py-3 rounded-lg font-semibold hover:bg-sky-600 transition-colors">
-                        Pesan Sekarang
-                    </button>
+                    @auth
+                        <button id="openModalButton" type="button" data-modal-target="bookingModal"
+                            data-modal-toggle="bookingModal"
+                            class="w-full bg-sky-500 text-white py-3 rounded-lg font-semibold hover:bg-sky-600 transition-colors">
+                            Pesan Sekarang
+                        </button>
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="block text-center bg-sky-500 text-white py-3 rounded-lg hover:bg-sky-600">
+                            Login untuk Pesan
+                        </a>
+                    @endauth
 
 
                 </form>

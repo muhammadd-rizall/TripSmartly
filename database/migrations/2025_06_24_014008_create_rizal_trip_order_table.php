@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('participants');
             $table->string('payment_methods');
             $table->enum('payment_status', ['pending', 'paid', 'failed']);
-            $table->text('notes');
+            $table->text('notes')->nullable();
             $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('pending');
             $table->timestamps();
         });

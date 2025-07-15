@@ -46,7 +46,7 @@
                             <!-- STATUS -->
                             <td class="px-4 py-4 text-center">
                                 @php
-                                    $statusColor = match($TO->status) {
+                                    $statusColor = match ($TO->status) {
                                         'pending' => 'bg-yellow-100 text-yellow-800 border-yellow-200',
                                         'confirmed' => 'bg-green-100 text-green-800 border-green-200',
                                         'cancelled' => 'bg-red-100 text-red-800 border-red-200',
@@ -54,18 +54,25 @@
                                     };
                                 @endphp
 
-                                <span class="inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded-full border {{ $statusColor }}">
-                                    @if($TO->status === 'pending')
+                                <span
+                                    class="inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold rounded-full border {{ $statusColor }}">
+                                    @if ($TO->status === 'pending')
                                         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                                                clip-rule="evenodd" />
                                         </svg>
                                     @elseif($TO->status === 'confirmed')
                                         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            <path fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd" />
                                         </svg>
                                     @elseif($TO->status === 'cancelled')
                                         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                            <path fill-rule="evenodd"
+                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
                                         </svg>
                                     @endif
                                     {{ ucfirst($TO->status) }}
@@ -74,14 +81,17 @@
                                 <!-- STATUS ACTION BUTTONS -->
                                 <div class="mt-3 flex justify-center gap-2">
                                     @if ($TO->status !== 'confirmed')
-                                        <form action="/update-status/{{ $TO->id }}" method="POST" class="inline-block">
+                                        <form action="{{ route('updateStatus', $TO->id) }}" method="POST"
+                                            class="inline-block">
                                             @csrf
                                             @method('PATCH')
                                             <input type="hidden" name="status" value="confirmed">
                                             <button type="submit"
                                                 class="inline-flex items-center gap-1 px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white text-xs font-medium rounded-md transition duration-150 shadow-sm transform hover:scale-105">
                                                 <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                                    <path fill-rule="evenodd"
+                                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                                 Konfirmasi
                                             </button>
@@ -89,7 +99,8 @@
                                     @endif
 
                                     @if ($TO->status !== 'cancelled')
-                                        <form action="/update-status/{{ $TO->id }}" method="POST" class="inline-block"
+                                        <form action="{{ route('updateStatus', $TO->id) }}" method="POST"
+                                            class="inline-block"
                                             onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')">
                                             @csrf
                                             @method('PATCH')
@@ -97,7 +108,9 @@
                                             <button type="submit"
                                                 class="inline-flex items-center gap-1 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-xs font-medium rounded-md transition duration-150 shadow-sm transform hover:scale-105">
                                                 <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                                    <path fill-rule="evenodd"
+                                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                                 Batalkan
                                             </button>
@@ -105,14 +118,17 @@
                                     @endif
 
                                     @if ($TO->status === 'cancelled' && $TO->status !== 'pending')
-                                        <form action="/update-status/{{ $TO->id }}" method="POST" class="inline-block">
+                                        <form action="{{ route('updateStatus', $TO->id) }}" method="POST"
+                                            class="inline-block">
                                             @csrf
                                             @method('PATCH')
                                             <input type="hidden" name="status" value="pending">
                                             <button type="submit"
                                                 class="inline-flex items-center gap-1 px-3 py-1.5 bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-medium rounded-md transition duration-150 shadow-sm transform hover:scale-105">
                                                 <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                                                    <path fill-rule="evenodd"
+                                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                                 Pending
                                             </button>
@@ -136,7 +152,7 @@
                                         Show
                                     </a>
 
-                                    <form action="#" method="POST" class="inline-block"
+                                    <form action="{{ route('deleteOr', $TO->id) }}" method="POST" class="inline-block"
                                         onsubmit="return confirm('Are you sure you want to delete this trip?')">
                                         @csrf
                                         @method('DELETE')

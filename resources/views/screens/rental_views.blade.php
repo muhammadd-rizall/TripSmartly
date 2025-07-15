@@ -112,6 +112,8 @@
                                     @endfor
                                     <span class="ml-2 text-gray-700">4.7</span>
                                 </div>
+
+                             
                             </div>
                         </a>
                     @endforeach

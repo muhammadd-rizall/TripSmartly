@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('rental_categories_id')->constrained('rizal_rental_categories');
             $table->text('description')->nullable();
             $table->integer('stock');
+            $table->text('pickup_location');
             $table->decimal('price_per_day', 15,2);
             $table->string('image');
             $table->timestamps();

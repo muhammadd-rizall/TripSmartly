@@ -72,7 +72,7 @@ class TripController extends Controller
             'status'        => $validated['status'],
         ]);
 
-        return redirect('/trip')->with('success', 'Trip berhasil disimpan.');
+        return redirect(route('openTrip'))->with('success', 'Trip berhasil disimpan.');
     }
 
     // Tampilkan form edit
@@ -132,7 +132,7 @@ class TripController extends Controller
             'status'        => $validated['status'],
         ]);
 
-        return redirect('/trip')->with('success', 'Trip berhasil diupdate.');
+        return redirect(route('openTrip'))->with('success', 'Trip berhasil diupdate.');
     }
 
     // Hapus trip
@@ -147,7 +147,7 @@ class TripController extends Controller
 
         $trip->delete();
 
-        return redirect('/trip')->with('success', 'Trip berhasil dihapus.');
+        return redirect(route('openTrip'))->with('success', 'Trip berhasil dihapus.');
     }
 
 
@@ -189,7 +189,7 @@ class TripController extends Controller
             ]
         );
 
-        return redirect('/trip-schedule')->with('succes', 'Item Rental Saved Successfully');
+        return redirect(route('tripSchedule'))->with('succes', 'Item Rental Saved Successfully');
     }
 
 
@@ -223,7 +223,7 @@ class TripController extends Controller
         $tripS->status = $validated['status'];
         $tripS->save();
 
-        return redirect('/trip-schedule');
+        return redirect(route('tripSchedule'));
     }
 
 
@@ -234,7 +234,7 @@ class TripController extends Controller
 
         $tripS->delete();
 
-        return redirect('/trip-schedule')->with('success', 'Item berhasil dihapus.');
+        return redirect(route('tripSchedule'))->with('success', 'Item berhasil dihapus.');
     }
 
 
@@ -272,7 +272,7 @@ class TripController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect('/trip-destination')->with('success', 'Data berhasil disimpan!');
+        return redirect(to: route('tripDestination'))->with('success', 'Data berhasil disimpan!');
     }
 
 
@@ -303,7 +303,7 @@ class TripController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect('/trip-destination')->with('success', 'Data berhasil diupdate!');
+        return redirect(route('tripDestination'))->with('success', 'Data berhasil diupdate!');
     }
 
     public function destroyTD($id)
@@ -312,7 +312,7 @@ class TripController extends Controller
 
         $tripS->delete();
 
-        return redirect('/trip-destination')->with('success', 'Item berhasil dihapus.');
+        return redirect(route('tripDestination'))->with('success', 'Item berhasil dihapus.');
     }
 
 
@@ -352,7 +352,7 @@ class TripController extends Controller
             'activity' => $combinedActivities,
         ]);
 
-        return redirect('/itinerary')->with('success', 'Itinerary berhasil ditambahkan.');
+        return redirect(route('tripItineraries'))->with('success', 'Itinerary berhasil ditambahkan.');
     }
 
     // EDIT
@@ -388,7 +388,7 @@ class TripController extends Controller
             'activity' => $combinedActivities,
         ]);
 
-        return redirect('/itinerary')->with('success', 'Itinerary berhasil diupdate.');
+        return redirect(route('tripItineraries'))->with('success', 'Itinerary berhasil diupdate.');
     }
 
     // DESTROY
@@ -397,6 +397,6 @@ class TripController extends Controller
         $itinerary = TripItternary::findOrFail($id);
         $itinerary->delete();
 
-        return redirect('/itinerary')->with('success', 'Itinerary berhasil dihapus.');
+        return redirect(route('tripItineraries'))->with('success', 'Itinerary berhasil dihapus.');
     }
 }

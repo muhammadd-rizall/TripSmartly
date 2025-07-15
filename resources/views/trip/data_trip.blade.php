@@ -4,7 +4,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <h1 class="text-2xl font-bold text-gray-800 mb-6">Data Trip</h1>
 
-        <a href="/create-trip"
+        <a href="{{ route('create-trip') }}"
             class="inline-block mb-6 bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-md shadow transition duration-200">
             Tambah Trip
         </a>
@@ -101,7 +101,7 @@
                                         </svg>
                                         Show
                                     </a>
-                                    <a href="/edit-trip/{{ $trip->id }}"
+                                    <a href="{{route('edit-trip', $trip->id) }}"
                                         class="inline-flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1.5 rounded-md text-xs font-medium transition duration-150 shadow-sm">
                                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -110,7 +110,7 @@
                                         </svg>
                                         Edit
                                     </a>
-                                    <form action="/delete-trip/{{ $trip->id }}" method="POST" class="inline-block"
+                                    <form action="{{ route('delete-trip', $trip->id) }}" method="POST" class="inline-block"
                                         onsubmit="return confirm('Are you sure you want to delete this trip?')">
                                         @csrf
                                         @method('DELETE')

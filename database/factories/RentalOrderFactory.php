@@ -29,7 +29,7 @@ class RentalOrderFactory extends Factory
             'quantity' => $this->faker->numberBetween(1,50),
             'total_price' => $this->faker->randomFloat(2, 50000, 1000000),
             'retrun_status' => $this->faker->randomElement(['belum kembali', 'kembali', 'terlambat', 'hilang']),
-            'pickup_location' => $this->faker->address(),
+            
             'delivery_location' => $this->faker->address(),
             'payment_methods' => $this->faker->randomElement(['transfer', 'cod', 'credit_card']),
             'payment_status' => $this->faker->randomElement(['pending', 'paid', 'failed']),

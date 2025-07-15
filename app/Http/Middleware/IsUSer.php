@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class IsUSer
+class IsUser
 {
     /**
      * Handle an incoming request.
@@ -18,6 +18,11 @@ class IsUSer
     {
         if (Auth::check() && Auth::user()->role === 'user') {
             return $next($request);
+        }
+
+        // Cek apakah user memiliki role 'user'
+        if (Auth::user()->role !== 'user') {
+            return redirect()->route('login')->with('error', 'Akses ditolak');
         }
         abort(433, 'Unauthorized action.');
     }

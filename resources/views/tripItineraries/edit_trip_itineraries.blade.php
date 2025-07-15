@@ -4,7 +4,7 @@
         <div class="bg-white rounded-3xl shadow-2xl p-8">
             <h3 class="text-3xl font-bold mb-8 text-gray-800 text-center">Edit Data Trip Itinerary</h3>
 
-            <form action="/update-itinerary/{{ $itinerary->id }}" method="POST">
+            <form action="{{route('updateIT' ,$itinerary->id )}}" method="POST">
                 @csrf
 
 
@@ -56,7 +56,7 @@
 
                 {{-- Tombol Aksi --}}
                 <div class="flex justify-between pt-4">
-                    <a href="/itinerary"
+                    <a href="{{ route('tripItineraries') }}"
                         class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">
                         Kembali
                     </a>

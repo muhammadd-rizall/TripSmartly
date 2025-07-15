@@ -39,6 +39,7 @@ class RentalItemController extends Controller
             'rental_categories_id'   => 'required|exists:rizal_rental_categories,id',
             'description'   => 'nullable|string',
             'stock'         => 'required|integer|min:0',
+            'pickup_location' => 'required|string',
             'price_per_day' => 'required|numeric|min:0',
             'image'         => 'required|image|mimes:jpg,png,jpeg,webp'
         ]);
@@ -55,12 +56,13 @@ class RentalItemController extends Controller
                 'rental_categories_id'   => $validated['rental_categories_id'],
                 'description'   => $validated['description'],
                 'stock'         => $validated['stock'],
+                'pickup_location'         => $validated['pickup_location'],
                 'price_per_day' => $validated['price_per_day'],
                 'image'         => $images
             ]
         );
 
-        return redirect('/rental_item')->with('succes', 'Item Rental Saved Successfully');
+        return redirect(route('itemRental'))->with('succes', 'Item Rental Saved Successfully');
     }
 
     //edit Rental Item
@@ -79,6 +81,7 @@ class RentalItemController extends Controller
             'rental_categories_id'   => 'required|exists:rizal_rental_categories,id',
             'description'   => 'nullable|string',
             'stock'         => 'required|integer|min:0',
+            'pickup_location' => 'required|string',
             'price_per_day' => 'required|numeric|min:0',
             'image'         => 'required|image|mimes:jpg,png,jpeg,webp'
         ]);
@@ -92,13 +95,14 @@ class RentalItemController extends Controller
 
         //update data
         $item->name = $validated['name'];
-        $item->nrental_categories_idame = $validated['rental_categories_id'];
+        $item->rental_categories_id = $validated['rental_categories_id'];
         $item->description = $validated['description'];
         $item->stock = $validated['stock'];
+        $item->pickup_location = $validated['pickup_location'];
         $item->price_per_day = $validated['price_per_day'];
         $item->save();
 
-        return redirect('/rental_item');
+        return redirect(route('itemRental'));
     }
 
 
@@ -114,7 +118,7 @@ class RentalItemController extends Controller
 
         $item->delete();
 
-        return redirect('/rental_item')->with('success', 'Item berhasil dihapus.');
+        return redirect(route('itemRental'))->with('success', 'Item berhasil dihapus.');
     }
 
 

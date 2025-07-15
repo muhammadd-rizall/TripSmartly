@@ -4,7 +4,7 @@
         <div class="bg-white rounded-3xl shadow-2xl p-8">
             <h3 class="text-3xl font-bold mb-8 text-gray-800 text-center">Edit Item Rental</h3>
 
-            <form action="/update-rental/{{ $item->id }}" method="post" enctype="multipart/form-data">
+            <form action="{{route('updateItem', $item->id) }}" method="post" enctype="multipart/form-data">
                 @csrf
 
                 {{-- Nama barang --}}
@@ -36,6 +36,19 @@
                         @endforeach
                     </select>
                     @error('rental_categories_id')
+                        <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Deskripsi --}}
+                <div class="mb-3">
+                    <label for="pickup_location" class="block text-sm font-medium text-gray-800">
+                        Deskripsi <span class="text-red-500">*</span>
+                    </label>
+                    <textarea name="pickup_location" id="pickup_location"
+                        class="mt-2 block w-full border border-gray-500 text-black focus:border-blue-300 focus:ring-blue-200 focus:ring focus:outline-none rounded-md py-2 px-2 {{ $errors->has('pickup_location') ?  'border-red-500' : '' }}"
+                        rows="4" required>{{ $item->pickup_location }}</textarea>
+                    @error('pickup_location')
                         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                     @enderror
                 </div>
@@ -101,7 +114,7 @@
 
                 {{-- Buttons --}}
                 <div class="flex justify-between pt-4">
-                    <a href="/rental_item"
+                    <a href="{{ route('itemRental') }}"
                         class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">
                         Kembali
                     </a>

@@ -4,7 +4,7 @@
         <div class="bg-white rounded-3xl shadow-2xl p-8">
             <h3 class="text-3xl font-bold mb-8 text-gray-800 text-center">Input Data Trip</h3>
 
-            <form action="/input-trip" method="post" enctype="multipart/form-data" class="space-y-6">
+            <form action="{{ route('input-trip') }}" method="post" enctype="multipart/form-data" class="space-y-6">
                 @csrf
 
                 {{-- Judul --}}
@@ -179,7 +179,7 @@
 
                 {{-- Buttons --}}
                 <div class="flex justify-between pt-6">
-                    <a href="/trip"
+                    <a href="{{ route('openTrip') }}"
                         class="inline-block px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">
                         Kembali
                     </a>

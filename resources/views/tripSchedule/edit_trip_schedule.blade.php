@@ -4,7 +4,7 @@
         <div class="bg-white rounded-3xl shadow-2xl p-8">
             <h3 class="text-3xl font-bold mb-8 text-gray-800 text-center">Edit Data Trip Schedule</h3>
 
-            <form action="/update-trip-schedule/{{ $tripS->id }}" method="post" enctype="multipart/form-data" class="space-y-6">
+            <form action="{{route('updateSchedule', $tripS->id) }}" method="post" enctype="multipart/form-data" class="space-y-6">
                 @csrf
 
                 {{-- Trip --}}
@@ -93,7 +93,7 @@
 
                 {{-- Buttons --}}
                 <div class="flex justify-between pt-4">
-                    <a href="/trip-schedule"
+                    <a href="{{ route('tripSchedule') }}"
                         class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">
                         Kembali
                     </a>

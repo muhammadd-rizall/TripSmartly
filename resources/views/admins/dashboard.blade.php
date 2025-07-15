@@ -77,16 +77,20 @@
                             </svg>
                         </button>
                         <div x-show="open && submenu === 'opentrip'" class="bg-gray-900">
-                            <a href="{{ route('openTrip') }}" class="block pl-14 pr-4 py-2 hover:bg-gray-600 border-b border-gray-800">
+                            <a href="{{ route('openTrip') }}"
+                                class="block pl-14 pr-4 py-2 hover:bg-gray-600 border-b border-gray-800">
                                 Open Trip Page
                             </a>
-                            <a href="{{ route('tripSchedule') }}" class="block pl-14 pr-4 py-2 hover:bg-gray-600 border-b border-gray-800">
+                            <a href="{{ route('tripSchedule') }}"
+                                class="block pl-14 pr-4 py-2 hover:bg-gray-600 border-b border-gray-800">
                                 Trip Schedule
                             </a>
-                            <a href="{{ route('tripDestination') }}" class="block pl-14 pr-4 py-2 hover:bg-gray-600 border-b border-gray-800">
+                            <a href="{{ route('tripDestination') }}"
+                                class="block pl-14 pr-4 py-2 hover:bg-gray-600 border-b border-gray-800">
                                 Trip Destinantion
                             </a>
-                            <a href="{{ route('tripItineraries') }}" class="block pl-14 pr-4 py-2 hover:bg-gray-600 border-b border-gray-800">
+                            <a href="{{ route('tripItineraries') }}"
+                                class="block pl-14 pr-4 py-2 hover:bg-gray-600 border-b border-gray-800">
                                 Trip Itineraries
                             </a>
                         </div>
@@ -213,13 +217,31 @@
 
             <!-- Footer - Fixed at bottom with solid background -->
             <div class="bg-gray-800 border-t border-gray-700 flex-shrink-0">
-                <a href="#" class="flex items-center p-4 hover:bg-gray-700">
-                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <!-- User Info -->
+                <div class="flex items-center p-4">
+                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
-                    <span x-show="open" class="ml-4">User Profile</span>
-                </a>
+                    <div class="flex flex-col space-y-1 ml-3" x-show="open">
+                        <span class="text-sm font-semibold text-white">{{ Auth::user()->name }}</span>
+                        <span class="text-xs text-red-500">{{ Auth::user()->role }}</span>
+                    </div>
+                </div>
+
+                <!-- Logout Button -->
+                <div class="border-t border-gray-700">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="flex items-center w-full p-4 hover:bg-red-600 text-left transition-colors duration-200">
+                            <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            <span x-show="open" class="ml-4 text-red-400">Logout</span>
+                        </button>
+                    </form>
+                </div>
             </div>
         </aside>
 
